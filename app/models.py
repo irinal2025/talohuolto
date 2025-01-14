@@ -102,10 +102,21 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    #def generate_confirmation_token(self, expiration=3600):
+    #    s = Serializer(current_app.config['SECRET_KEY'])
+    #    return s.dumps({'user_id': self.id}, salt=current_app.config['SECURITY_PASSWORD_SALT'], expires=expiration)
+    
+    #def generate_confirmation_token(self, expiration=3600):
+    #    s = Serializer(current_app.config['SECRET_KEY'])
+    #    token = s.dumps({'user_id': self.id}, salt=current_app.config['SECURITY_PASSWORD_SALT'])
+    #    expiration_time = datetime.now(timezone.utc) + timedelta(seconds=expiration)
+    #    return token, expiration_time
+    
     def generate_confirmation_token(self, expiration=3600):
         s = Serializer(current_app.config['SECRET_KEY'])
-        return s.dumps({'user_id': self.id}, salt=current_app.config['SECURITY_PASSWORD_SALT'], expires=expiration)
-
+        payload = {'user_id': self.id}
+        token = s.dumps(payload, salt=current_app.config['SECURITY_PASSWORD_SALT'])
+        return token
 
     def confirm(self, token):
         s = Serializer(current_app.config['SECRET_KEY'], salt=current_app.config['SECURITY_PASSWORD_SALT'])
