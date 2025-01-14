@@ -1,0 +1,46 @@
+{% extends "base_dashboard.html" %}
+
+{% block dashboard_content %}
+<h1>Taloyhtiön tiedot</h1>
+
+{% if company %}
+    <h2> {{ company.name }}</h2>
+    <p><strong>Osoite:</strong> {{ company.address }}, {{ company.postal_code }} {{ company.city }}</p>
+
+  <!-- Asukkaiden tai hallituksen yhteystiedot -->
+  <section class="yhteystiedot">
+    <h2>Yhteystiedot</h2>
+    <p><strong>Hallituksen puheenjohtaja:</strong> {{ company.manager_name }}</p>
+    <p><strong>Sähköposti:</strong> {{ company.manager_email }}</p>
+    <p><strong>Puhelin:</strong> {{ company.manager_phone }}</p>
+  </section>
+
+    <!-- Rakennuksen perustiedot -->
+    <section class="rakennuksen-tiedot">
+        <h2>Rakennuksen perustiedot</h2>
+        <ul>
+          <li><strong>Valmistumisvuosi:</strong>  {{ company.year_of_completion }}</li>
+          <li><strong>Pinta-ala:</strong> {{ company.area }} m²</li>
+        </ul>
+    </section>
+
+    {% if current_user.is_administrator() %}
+    <p class="mb-3"><a href="{{ url_for('main.housing_company_edit') }}">Päivitä tiedot <i class="fa-solid fa-angles-right"></i></p>
+    {% endif %}
+
+    <h3>Yhtiön sopimukset</h3>
+    <ul>
+        {% for contract in company.contracts %}
+            <li><strong>{{ contract.contract_type }}:</strong> {{ contract.company_name }}</li>
+        {% endfor %}
+    </ul>
+
+    {% if current_user.is_administrator() %}
+    <p class="mb-0"><a href="{{ url_for('main.housing_company_contracts') }}">Päivitä sopmukset <i class="fa-solid fa-angles-right"></i></p>
+    {% endif %}
+
+
+{% else %}
+    <p>Tietoja ei löytynyt.</p>
+{% endif %}
+{% endblock %}

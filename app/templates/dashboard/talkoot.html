@@ -1,0 +1,70 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+Talkoiden hallinta - Hallintapaneeli - TaloHuolto
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="container">
+  <h1>Talkoot</h1>
+
+  <!-- Talkoiden lista -->
+  <section class="talkoot">
+    <h2>Tulevat talkoot</h2>
+    <p>Tässä näkyvät seuraavat talkoot, tarvittavat varusteet ja osallistujat.</p>
+
+    <!-- Talkoiden taulukko -->
+    <table>
+      <thead>
+        <tr>
+          <th>Päivämäärä</th>
+          <th>Varusteet</th>
+          <th>Osallistujat</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for talkoo in talkoot %}
+        <tr>
+          <td>{{ talkoo.date }}</td>
+          <td>{{ talkoo.equipment }}</td>
+          <td>{{ talkoo.participants|map(attribute='name')|join(', ') or 'Ei osallistujaa' }}</td> <!-- Osallistujat näkyvät täällä -->
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="3">Ei tulevia talkoita.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <div class="border-top my-3"></div>
+  
+  <!-- Talkoiden ilmoittautumislomake -->
+  <section class="ilmoittautuminen">
+    <h2>Ilmoittaudu talkoisiin</h2>
+    <p>Täytä alla oleva lomake ilmoittautuaksesi talkoisiin. Ilmoittautumisen jälkeen saat lisätietoja varusteista ja tehtävistä.</p>
+
+    <form action="{{ url_for('main.manage_talkoot') }}" method="POST">
+      {{ form.hidden_tag() }}  <!-- Tämä lisää CSRF-tunnuksen lomakkeeseen -->
+      <div class="form-group">
+        <label for="talkoo">Valitse talkoot</label>
+        <select class="form-control" id="talkoo" name="talkoo_id" required>
+          {% for talkoo in talkoot %}
+          <option value="{{ talkoo.id }}">{{ talkoo.date }} - {{ talkoo.equipment }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Ilmoittaudu</button>
+    </form>
+  </section>
+  
+  {% if current_user.is_administrator() %}
+  <section>
+    <h2>Talkoiden hallinta</h2>
+    <a href="{{ url_for('main.manage_talkoot_hallinta') }}">Lisää talkoot <i class="fa-solid fa-angles-right"></i></a>
+  </section>
+  {% endif %}
+
+</div>
+{% endblock %}

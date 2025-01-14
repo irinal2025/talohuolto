@@ -1,0 +1,48 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Vinkit - TaloHuolto{% endblock %}
+
+{% block dashboard_content %}
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Hello, {{ user.username }}!</h1>
+            {% if current_user.is_authenticated %} 
+            {# Check if the user is authenticated #}
+                <p>Olet kirjautunut sisään käyttäjänä {{ current_user.email }}.</p>
+
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div>
+                        {{ form.username.label }}
+                        {{ form.username(size=30, class_="form-control") }}
+                    </div>
+                
+                    <div>
+                        {{ form.phone.label }}
+                        {{ form.phone(size=15, class_="form-control") }}
+                    </div>
+                
+                    <div>
+                        {{ form.apartment.label }}
+                        {{ form.apartment(size=5, class_="form-control") }}
+                    </div>
+                
+                    <div>
+                        {{ form.new_password.label }}
+                        {{ form.new_password(class_="form-control") }}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">{{ form.submit.label }}</button>
+                </form>
+
+
+            {% else %}
+                <h2>
+                    Et ole kirjautunut sisään.
+                    <i class="fa-solid fa-ghost"></i>
+                </h2>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

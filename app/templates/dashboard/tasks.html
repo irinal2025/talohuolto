@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}
+Huoltokirja ja tehtävät - Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <aside class="sidebar">
+        {% include "dashboard_nav.html" %}
+    </aside>
+
+    <!-- Dashboardin sisältö -->
+    <section class="dashboard-content">
+        <h1>Huoltokirja ja tehtävät</h1>
+
+        <!-- Tehtävien luontilomake -->
+        <section class="dashboard-section">
+            <!-- h2>Tehtävien hallinta</h2 -->
+
+            <!-- Tehtävien lista -->
+            <section class="dashboard-section">
+                <h2>Tehtävät</h2>
+                <ul>
+                    {% for task in tasks %}
+                        <li>
+                            <strong>{{ task.task_name }}</strong> |  
+                            Kategoria: {{ task.category }} | 
+                            Aloitus: {{ task.start_date }} | 
+                            Päättyy: {{ task.end_date }} | 
+                            Prioriteetti: <span class="priority-{{ task.priority.lower() }}">{{ task.priority }}</span> 
+                            {% if current_user.is_administrator() %}
+                                <span> | </span>
+                                <a href="{{ url_for('main.edit_task', task_id=task.id) }}">Muokkaa <i class="fa-solid fa-angles-right"></i></a>
+                            {% endif %}
+                        </li>
+                    {% else %}
+                        <p>Ei tehtäviä listattavana.</p>
+                    {% endfor %}
+                </ul>
+            </section>
+            
+            <div class="border-top my-3"></div>
+
+            <section class="lisaa-huoltotyo">
+                <h2>Lisää uusi huoltotyö</h2>
+
+                <!-- Lomake tehtävien luontiin -->
+                <form method="POST" action="{{ url_for('main.manage_tasks') }}">
+                    {{ form.hidden_tag() }}
+                    <div>
+                        <label for="task_name">Tehtävän nimi:</label>
+                        {{ form.task_name(class="form-control") }}
+                    </div>
+                    <div>
+                        <label for="category">Kategoria:</label>
+                        {{ form.category(class="form-control") }}
+                    </div>
+                    <div>
+                        <label for="start_date">Aloituspäivämäärä:</label>
+                        {{ form.start_date(class="form-control") }}
+                    </div>
+                    <div>
+                        <label for="end_date">Päättymispäivämäärä:</label>
+                        {{ form.end_date(class="form-control") }}
+                    </div>
+                    <div>
+                        <label for="priority">Prioriteetti:</label>
+                        {{ form.priority(class="form-control") }}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">Lisää tehtävä</button>
+                </form>
+            </section>
+        </section>
+
+
+    </section>
+</div>
+{% endblock %}

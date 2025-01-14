@@ -1,0 +1,265 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Hallintapaneeli - TaloHuolto{% endblock %}
+
+{% block dashboard_content %}
+    <div class="container mt-4">
+        <!-- Chart Javascripts -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <h1>
+            <!--
+            {% if user %}
+                Tervetuloa, {{ user }}!
+             {% else %}
+                Tervetuloa, käyttäjä!
+            {% endif %}
+             -->
+
+            {% if current_user.is_authenticated %} 
+            {# Check if the user is authenticated #}
+                Tervetuloa,  {{ current_user.username }}.
+            {% else %}
+                Tervetuloa, käyttäjä! 
+            {% endif %}
+        </h1>
+        
+        {% if not current_user.is_authenticated %} 
+        <p>
+            <span class="text-danger">Tämä sivu on tarkoitettu vain kirjautuneille jäsenille.</span>
+            Et ole kirjautunut sisään
+            <i class="fa-solid fa-ghost"></i>. 
+        </p>         
+    {% endif %}
+
+        <p>Tämä on yleiskatsaus pientaloyhtiön huoltokirjaan.</p>
+
+        
+        <div class="row mb-5">
+
+            <!-- Tärkeimmät huoltotiedot -->
+            <div class="col-md-6">
+                <h4>Tärkeimmät Huoltotiedot</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <!--Avoimet tehtävät: {{ huoltotiedot['avoimet_tehtavat'] }}-->
+                        <!--Tulevat tehtävät: {{ upcoming_tasks_count }}-->
+                        Tulevat huoltotyöt: {{ upcoming_tasks_count2 }}
+                    </li>
+                    <li class="list-group-item">
+                        Seuraavat huoltotyöt:
+                        <!--ul>
+                            {% for aikataulu in huoltotiedot['seuraavat_aikataulut'] %}
+                                <li>{{ aikataulu['tehtava'] }} - {{ aikataulu['pvm'] }}</li>
+                            {% endfor %}
+                        </ul-->
+                        {% if seuraavat_huoltotyot %}
+                            <ul>
+                                {% for task in seuraavat_huoltotyot %}
+                                    <li>
+                                        {{ task.task_name }} - {{ task.start_date.strftime('%d.%m.%Y') }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>Ei tulevia huoltotöitä.</p>
+                        {% endif %}
+
+
+                    </li>
+                </ul>
+                <a href="{{ url_for('main.manage_tasks') }}" class="">Kaikki huoltotyöt <i class="fa-solid fa-angles-right"></i></a>
+            </div>
+            
+        <!-- Huoltohistorian kaavio -->
+            <div class="col-md-6">
+                <h4>Huoltohistorian Tilastot</h4>
+                <canvas id="maintenanceHistoryChart"></canvas> <!-- Chart.js kaavio -->
+                <script>
+                    var ctx = document.getElementById('maintenanceHistoryChart').getContext('2d');
+                    var maintenanceHistoryChart = new Chart(ctx, {
+                        data: {
+                            datasets: [{
+                                order: 2,
+                                type: 'bar',
+                                label: 'Huoltotyöt (määrä)',
+                                data: [5, 3, 6, 4, 7, 5, 1, 1, 3, 2, 3],
+                                borderColor: '#2c3e50',
+                                backgroundColor: 'rgba(44, 62, 80,  0.2)'
+                            }, {
+                                order: 1,
+                                type: 'line',
+                                label: 'Suoritettu (määrä)',
+                                data: [4, 3, 5, 4, 7, 5, 1, 0, 3, 2, 2],
+                                backgroundColor: '#2c3e50',
+                                borderColor: '#2c3e50',
+                            }],
+                            labels: ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu', 'Kesäkuu', 'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu', 'Joulukuu'], // Kuukaudet
+                        },
+                          options: {
+                            responsive: true,
+                            scales: {
+                              y: {
+                                beginAtZero: true
+                              }
+                            }
+                          }
+                    });
+                    </script>
+            </div>
+        </div>
+
+        <div class="row mb-5 mt-4">
+            <!-- Tiedotteet -->
+            <div class="col-md-6">
+                <h4>Viimeisimmät tiedotteet</h4>
+                <div class="reports">
+                <!--ul>
+                    <li><strong>27.11.2024:</strong> Uusi talkooviikonloppu!</li>
+                    <li><strong>15.11.2024:</strong> Taloyhtiön vuosikokous.</li>
+                </ul-->
+
+                <ul>
+                {% for notification in notifications %}
+                    <li>
+                        <strong>{{ notification.title }}</strong>  
+                        <small>Julkaistu: {{ notification.publish_date }}</small>
+                        <p>{{ notification.content }}</p>
+                    </li>
+                {% else %}
+                    <li>Ei ilmoituksia.</li>
+                {% endfor %}
+                </ul>
+
+            </div>
+            <a href="{{ url_for('main.manage_notifications') }}" class="">Kaikki tiedotteet <i class="fa-solid fa-angles-right"></i></a>
+            </div>
+        
+               <!-- Vikailmoitukset -->
+               <div class="col-md-6">
+                <h4>Viimeisimmät vikailmoitukset</h4>
+                <div class="reports">
+                    <!--ul>
+                        <li>Rikkoutunut ulkovalo - Kesken</li>
+                        <li>Piha-aidan korjaus - Suunnitteilla</li>
+                    </ul-->
+
+                    <ul>
+                    {% for fault_report in fault_reports %}
+                        <li>
+                            <strong>{{ fault_report.issue }}</strong>  
+                            <small>{{ fault_report.status }}</small>
+                        </li>
+                    {% else %}
+                        <li>Ei ilmoituksia.</li>
+                    {% endfor %}
+                    </ul>
+
+                    <p class="mb-0">Avoimet vikailmoitukset: {{ open_fault_reports_count }}</p>
+                    
+                </div>
+                <a href="{{ url_for('main.manage_faultreport') }}" class="">Tee tai selaa vikailmoituksia <i class="fa-solid fa-angles-right"></i></a>
+            </div>
+    </div>
+    
+        <!-- Energiankulutus -->
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <h4>Taloyhtiön sähkön  kulutus</h4>
+                <p>Kerros- ja rivitaloissa kiinteistösähkönkulutus on ollut keskimäärin 4 prosenttia taloyhtiön hoitokuluista ja sitä kuluu tyypillisesti noin 2-6 kWh/m3/v.</p>
+                <p>Nykyinen kulutus: {{ huoltotiedot['energiankulutus']['current_usage'] }} kWh</p>
+                <p>Edellinen kulutus: {{ huoltotiedot['energiankulutus']['previous_usage'] }} kWh</p>
+            </div>
+            
+            <!-- Energiankulutuskaavio (Chart.js) -->
+            <div class="col-md-6">
+                <h4>Energian Kulutuksen Kehitys</h4>
+                <canvas id="energyChart"></canvas> <!-- Chart.js canvas -->
+                <script>
+                    var ctx = document.getElementById('energyChart').getContext('2d');
+                    var energyChart = new Chart(ctx, {
+                        type: 'bar', // Tyyppi: pylväskaavio
+                        data: {
+                            labels: ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu'], // Kuukaudet
+                            datasets: [{
+                                label: 'Energiankulutus (kWh)',
+                                data: [150, 130, 160, 170, 140], // Esimerkkidata
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+
+
+        <!-- Placeholder for a chart or more statistics -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <h4>Talkoot ja tapahtumat</h4>
+                <!--div class="chart-placeholder"-->
+                    <!--i class="fas fa-chart-line fa-3x"></i-->
+                    <!--p>Ajankohtaiset talkoot ja muut tapahtumat taloyhtiössä, johon asukkaat voivat osallistua. (Tulossa)</p>
+                </div-->
+                <ul>
+                    {% for talkoot in talkoot %}
+                        <li>
+                            <strong>{{ talkoot.date.strftime('%d.%m.%Y') }}</strong>  
+                            <small>{{ talkoot.equipment }}</small>
+                        </li>
+                    {% else %}
+                        <li>Ei ilmoituksia.</li>
+                    {% endfor %}
+                </ul>
+                <a href="{{ url_for('main.manage_talkoot') }}" class="">Ilmoittaudu talkoisiin <i class="fa-solid fa-angles-right"></i></a> 
+            </div>
+
+           <div class="col-md-6">
+            <h4>Kokoukset</h4>
+            <ul>
+                {% for tulevat_kokoukset in tulevat_kokoukset %}
+                    <li>
+                        <strong>{{ tulevat_kokoukset.task_name }}</strong>  
+                        <small>{{ tulevat_kokoukset.start_date.strftime('%d.%m.%Y') }}</small>
+                    </li>
+                {% else %}
+                    <li>Ei ilmoituksia.</li>
+                {% endfor %}
+                </ul>
+                <a href="{{ url_for('main.manage_calendar') }}" class="">Katso tulevat kokoukset <i class="fa-solid fa-angles-right"></i></a>
+            <!--ul class="list-group">
+                {% for tehtava in huoltotiedot['seuraavat_aikataulut'] %}
+                    <li class="list-group-item">
+                        {{ tehtava['tehtava'] }} - {{ tehtava['pvm'] }}
+                    </li>
+                {% endfor %}
+            </ul-->
+        </div>
+
+           <!-- Avoimet tehtävät ja aikataulut -->
+           <!--div class="col-md-6">
+            <h4>Avoimet Tehtävät</h4>
+            <ul class="list-group">
+                {% for tehtava in huoltotiedot['seuraavat_aikataulut'] %}
+                    <li class="list-group-item">
+                        {{ tehtava['tehtava'] }} - {{ tehtava['pvm'] }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div-->
+    </div>
+
+
+{% endblock %}
+
+

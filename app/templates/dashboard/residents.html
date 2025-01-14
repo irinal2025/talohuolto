@@ -1,0 +1,41 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Asukkaiden hallinta - Hallintapaneeli - TaloHuolto{% endblock %}
+
+{% block dashboard_content %}
+    <div class="container mt-4">
+        <h2>Asukkaiden hallinta</h2>
+
+        <!-- Lomake uuden asukkaan lisäämiseksi -->
+        <!--form action="{{ url_for('main.manage_residents') }}" method="POST">
+            <div class="form-group">
+                <label for="nimi">Uusi Asukas:</label>
+                <input type="text" class="form-control" id="nimi" name="nimi" required>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Lisää Asukas</button>
+        </form-->
+
+        <h3 class="mt-4">Asukkaat</h3>
+        <ul class="list-group">
+            {% for asukas in asukkaat %}
+                <li class="list-group-item d-flex justify-content-between">
+                    {{ asukas.username }}  <!-- Tässä varmistetaan, että nimi näytetään oikein -->
+                    <!--button class="btn btn-danger btn-sm">Poista</button>
+                    <button class="btn btn-warning btn-sm">Muokkaa</button-->
+
+                        <div>
+                            <form action="{{ url_for('main.manage_residents_delete', asukas_id=asukas.id) }}" method="POST"  class="form-inline">
+                                {{ form.hidden_tag() }}
+                                <button type="submit" class="btn btn-danger btn-sm">Poista</button>
+                            </form>
+        
+                            <a href="{{ url_for('main.manage_residents_edit', asukas_id=asukas.id) }}" class="">Muokkaa <i class="fa-solid fa-angles-right"></i></a>
+                        </div>
+
+                </li>
+            {% else %}
+                <p>Ei asukkaita tällä hetkellä.</p>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

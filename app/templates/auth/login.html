@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% import "auth/wtf.html" as wtf %}
+
+{% block title %}Kirjaudu sisään - TaloHuolto{% endblock %}
+
+{% block page_content %}
+<section class="tips-container">
+  <div class="page-header">
+      <h1>Kirjaudu sisään</h1>
+      <p>Taloyhtiön työkalu järjestelmälliseen kunnossapitoon.</p>
+  </div>
+
+
+  
+    <div class="section">
+        <div class="row">
+            <div class="col">
+                <!-- Esittelykuva -->
+                <img src="{{ url_for('static', filename='img/kirjaudu.jpg') }}" alt="Huoltokirja ja kunnossapito" width="100%" height="auto">
+            </div>
+            <div class="col">
+              <div class="lomake">
+              {{ wtf.quick_form(form,novalidate=True,extra_classes='needs-validation') }}
+            </div>
+                <p>Unohditko salasanan? <a href="{{ url_for('auth.password_reset_request') }}">Klikkaa tästä nollataksesi sen</a>.</p>
+                <p>Eikö sinulla ole vielä TaloHuolto tunnusta? <a href="{{ url_for('auth.register') }}">Rekisteröidy täällä</a>.</p>                
+            </div>
+        </div>
+    </div>  
+  
+  
+</section>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+Taloyhtiön tiedot - Hallintapaneeli - TaloHuolto
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="container">
+  <h1>Taloyhtiön tiedot</h1>
+  
+  <!-- Rakennuksen perustiedot -->
+  <section class="rakennuksen-tiedot">
+    <h2>Rakennuksen perustiedot</h2>
+    <ul>
+      <li><strong>Valmistumisvuosi:</strong> 1985</li>
+      <li><strong>Pinta-ala:</strong> 1200 m²</li>
+    </ul>
+  </section>
+  
+  <!-- Asukkaiden tai hallituksen yhteystiedot -->
+  <section class="yhteystiedot">
+    <h2>Yhteystiedot</h2>
+    <p><strong>Hallituksen puheenjohtaja:</strong> Maija Meikäläinen</p>
+    <p><strong>Sähköposti:</strong> maija.meikalainen@example.com</p>
+    <p><strong>Puhelin:</strong> +358 50 1234567</p>
+  </section>
+  
+  <!-- Yhtiön sopimukset -->
+  <section class="sopimukset">
+    <h2>Yhtiön sopimukset</h2>
+    <ul>
+      <li><strong>Kiinteistönhuolto:</strong> Seinäjoen Kiinteistöhuolto Oy</li>
+      <li><strong>Jätehuolto:</strong> Jätepalvelut Oy</li>
+      <li><strong>Siivouspalvelut:</strong> Puhdas Koti Oy</li>
+    </ul>
+  </section>
+</div>
+{% endblock %}

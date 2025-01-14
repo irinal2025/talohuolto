@@ -1,0 +1,55 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+Energiatehokkuus - Hallintapaneeli - TaloHuolto
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="container">
+  <h1>Energiatehokkuus</h1>
+
+  <!-- Kiinteistön energiankulutus -->
+  <section class="energiankulutus">
+    <h2>Kiinteistön energiankulutus</h2>
+    <p>Seuraa kiinteistön energiankulutusta ja paranna energiatehokkuutta.</p>
+
+    <!-- Esimerkki energiankulutuksen seurannasta -->
+    <table>
+      <thead>
+        <tr>
+          <th>Kuukausi</th>
+          <th>Sähkönkulutus (kWh)</th>
+          <th>Vesikulutus (m³)</th>
+          <th>Energiakustannukset (€)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for month in energiankulutus_data %}
+        <tr>
+          <td>{{ month.kuukausi }}</td>
+          <td>{{ month.sahko_kwh }}</td>
+          <td>{{ month.vesi_m3 }}</td>
+          <td>{{ month.energiakustannukset }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="4">Ei tietoja saatavilla.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Vinkkejä energiansäästöön -->
+  <section class="energianvinkit">
+    <h2>Vinkkejä energiansäästöön</h2>
+    <ul>
+      <li>Asenna energiatehokkaat LED-lamput koko taloyhtiöön.</li>
+      <li>Varmista, että lämmitysjärjestelmä on säädetty optimaalisiin arvoihin.</li>
+      <li>Käytä älykkäitä termostaatteja, jotka säätelevät lämpötilaa tarpeen mukaan.</li>
+      <li>Suorita säännölliset tarkastukset ja huollot kiinteistön energiatehokkuuden parantamiseksi.</li>
+      <li>Kannusta asukkaita sammuttamaan valot ja laitteet, kun niitä ei käytetä.</li>
+    </ul>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,638 @@
+/* Yleiset asetukset */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7; /* Vaaleanharmaa tausta */
+  color: #333; /* Tummanharmaa teksti */
+  margin: 0;
+  padding: 0;
+}
+
+/* Navigaatio */
+.navbar-dark .navbar-nav .nav-link.active, 
+.navbar-dark .navbar-nav .show>.nav-link {
+  /*color: #81c784;*/
+  text-decoration: underline;
+}
+
+
+
+/* Dashboard. Vasemman puolen navigaatio */
+.sidebar {
+    min-height: 100vh;
+    width: 20%;
+    background-color: #2c3e50;
+    padding: 1px;
+    /*box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);*/
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 6px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 15px;
+    letter-spacing: 0.2px;
+}
+
+.sidebar .nav-item .nav-link i {
+  color: rgba(255, 255, 255, .3);
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+.sidebar a.nav-link.active i,
+.sidebar a.nav-link.active {
+    color: #81c784;
+}
+.sidebar i.fa {
+    margin-right: 10px;
+}
+.nav-item-divider {
+  border-top: 1px solid rgba(255, 255, 255, .15);
+  border-bottom: 1px solid rgba(255, 255, 255, .15);
+}
+
+
+
+/* Painikkeet */
+button, .btn {
+  background-color: #81c784; /* Vaaleanvihreä */
+  color: #ffffff; /* Valkoinen teksti */
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover, .btn:hover {
+  background-color: #5dade2; /* Vaaleansininen hover */
+}
+
+/* Pääotsikot */
+h1, h2, h3 {
+  color: #2c3e50; /* Tummansininen */
+}
+
+/* Lomakkeet */
+form {
+  background-color: #ffffff; /* Valkoinen tausta */
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+form.form-inline {
+  display: inline;
+  border: 0 none;
+  background-color: transparent;
+  padding: 0 10px;
+  border-radius: 0;
+  box-shadow: none;
+}
+input, textarea, select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #81c784; /* Vaaleanvihreä fokus */
+  outline: none;
+}
+
+form.taskupdateform {
+  display: inline-block;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 2px;
+}
+
+/* Linkit */
+a {
+  color: #5dade2; /* Vaaleansininen */
+  text-decoration: none;
+}
+
+a:hover {
+  color: #2c3e50; /* Tummansininen hover */
+}
+
+/* Footer */
+footer {
+  background-color: #2c3e50; /* Tummansininen */
+  color: #ffffff; /* Valkoinen teksti */
+  text-align: center;
+  padding: 1rem 0;
+  /*margin-top: 2rem;*/
+  margin-top: 2px;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+footer .socialmediaicons .ffa path {
+  fill: #666873;
+}
+footer .footer-row {
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  width: 100%;
+}
+footer .footer-row .col {
+  width: 50%;
+  padding: 20px 0;
+}
+@media screen and (min-width: 601px) {
+  footer .footer-row .col {
+    width: 25%;
+    padding: 20px 0;
+  }
+}
+footer .footer-row h3 {
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 10px;
+  margin-top: 0;
+  line-height: 1.5;
+}
+footer .footer-row p,
+footer .footer-row a {
+  color: #666873;
+  font-size: 16px;
+  text-decoration: none;
+}
+footer .footer-row a:hover {
+  color: #fff;
+}
+footer .footer-row ul {
+  list-style: none;
+  padding-left: 0;
+}
+footer .footer-row ul li {
+  line-height: 1.5;
+  margin-bottom: 10px;
+} 
+footer .socialmediaicons .ffa path {
+  fill: #666873;
+}
+footer .footer-btt {
+  position: relative
+}
+.backToTopButton {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  border: none;
+  outline: none;
+  background-color: gray; 
+  color: white;
+  cursor: pointer; 
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 18px; 
+}
+.backToTopButton:hover {
+  background-color: #555;
+}
+.backToTopButton .arrowup {
+  border: solid #fff;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  -webkit-transform: rotate(225deg);
+  transform: rotate(225deg);
+}
+
+ /* Style all font awesome icons */
+ .socialmediaicons {
+  text-align: center;
+}
+.socialmediaicons p {
+  /*color: #666;*/
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 13px;
+}
+.socialmediaicons .ffa {
+  padding: 0;
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  text-decoration: none;
+  margin: 0 2px;
+  text-align: center;
+  /*color: #666;*/
+}
+.socialmediaicons .ffa svg {
+  margin: 0;
+  width: 30px;
+  height: 30px;
+}
+.feedbackpage .socialmediaicons {
+  margin-bottom: 20px;
+}
+.feedbackpage .socialmediaicons .ffa path {
+  fill: #303030;
+}
+.socialmediaicons .ffa:hover {
+  opacity: 0.7;
+}
+
+/* Dashboard-sivun tyyli */
+.dashboard-container {
+    display: flex;
+    /*margin: 20px;*/
+}
+
+/* Dashboardin sisältö */
+.dashboard-content {
+    width: 80%;
+    padding: 20px;
+}
+/* Dashboardin yleinen tyyli */
+.dashboard-content {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-content h1 {
+  font-size: 1.8em;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.dashboard-content h2 {
+  font-size: 1.5em;
+  color: #2c3e50;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.dashboard-content p,
+.dashboard-content ul {
+  font-size: 1em;
+  color: #555;
+}
+
+.dashboard-content ul {
+  padding-left: 20px;
+}
+
+.dashboard-content ul li {
+  margin-bottom: 5px;
+}
+
+.dashboard-content .overview,
+.dashboard-content .reports,
+.dashboard-content .notifications,
+.dashboard-content .stats {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f4f4f4;
+  border-left: 4px solid #2c3e50;
+  border-radius: 5px;
+}
+
+.dashboard-content .overview strong,
+.dashboard-content .stats strong {
+  color: #333;
+}
+
+/* Vinkkejä-sivun tyyli */
+.tips-container {
+  padding: 20px;
+  background-color: #fff;
+  margin: 20px auto;
+  max-width: 800px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tips-container h1 {
+  /*font-size: 1.8em;*/
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.tips-container p {
+  font-size: 1em;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.tips-container .section {
+  margin-bottom: 30px;
+}
+
+.tips-container .section h2 {
+  font-size: 1.5em;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.tips-container ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.tips-container ul li {
+  margin-bottom: 10px;
+  font-size: 1em;
+  color: #555;
+}
+
+.tips-container ul li a {
+  text-decoration: underline;
+  color: #2c3e50;
+}
+
+.tips-container ul li a:hover {
+  text-decoration: underline;
+}
+
+
+/* Vuodenaikojen huoltotehtävät -osion tyyli */
+.season-tasks h3 {
+  font-size: 1.3em;
+  color: #2c3e50;
+  margin-top: 10px;
+}
+
+.season-tasks ul {
+  list-style-type: square;
+  margin-left: 20px;
+}
+
+.season-tasks ul li {
+  margin-bottom: 10px;
+  font-size: 1em;
+  color: #555;
+}
+
+.season-tasks {
+  display: none;
+  padding: 1px 10px 10px;
+  border-radius: 0 0 20%;
+}
+.seasons-img {
+  float: right;
+  margin-left: 5px;
+}
+
+.season-tasks#talvi {
+  border-left: 7px solid #dbeef4;
+  border-bottom: 10px solid #dbeef4;
+}
+.season-tasks#kevat {
+  border-left: 7px solid #d5f3dc;
+  border-bottom: 10px solid #d5f3dc;
+}
+.season-tasks#kesa {
+  border-left: 7px solid #ffe082;
+  border-bottom: 10px solid #ffe082;
+}
+.season-tasks#syksy {
+  border-left: 7px solid #ffcc80;
+  border-bottom: 10px solid #ffcc80;
+}
+
+.intro {
+  padding: 20px;
+  background-color: #fff;
+  margin: 20px auto;
+  max-width: 800px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.external_link {
+  padding-right: 1.25em;
+}
+.external_link::after {
+  position: absolute;
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-left: 0.25em;
+  background-size: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewbox='0 0 12.2 12.2' width='14' height='14'%3E%3Cpath d='M5.7 0v1.5h4L4.5 6.7l1 1.1 5.3-5.2v3.9h1.4V0z'/%3E%3Cpath fill='none' d='M3.4 6.7l3-2.9H1.5v7h7V5.9l-3 2.9z'/%3E%3Cpath d='M8.5 5.9v4.9h-7v-7h4.9l1.5-1.6H0v10h10V4.4z'/%3E%3C/svg%3E");
+  transform: translateY(0.25em);
+}
+
+
+
+/* Hero-osio */
+.syksy {
+  background: url('img/th_bg.jpg') no-repeat center center/cover;
+}
+
+/* Hero-osio */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Koko näkymän korkeus */
+  background: url('img/hero.webp') no-repeat center center/cover;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.hero-content {
+  background: rgba(0, 0, 0, 0.7); /* Tumma läpinäkyvä tausta */
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  font-size: 3rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Otsikon varjostus */
+  margin-bottom: 1rem;
+  color: lightslategray;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: lightgrey;
+}
+
+.hero .btn {
+  display: inline-block;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+.hero .btn:hover {
+  background: #0056b3; /* Tummempi sininen hover-efekti */
+}
+
+.vikailmoitukset-lista form {
+  display: inline-block;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 2px;
+}
+
+.vikailmoitukset-lista form .btn {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+}
+
+.vikailmoitukset-lista tr {
+  border-bottom-width: 1px;
+}
+
+.priority-low,
+.priority-matala {
+  color: green;
+  font-weight: bold;
+}
+
+.priority-medium,
+.priority-keskitaso {
+  color: orange;
+  font-weight: bold;
+}
+
+.priority-high,
+.priority-korkea {
+  color: red;
+  font-weight: bold;
+}
+
+.priority-default {
+  color: gray;
+}
+
+.badge-pending {
+  background-color: #f4f4f4;  /* Vaaleanharmaa */
+  color: #333;  /* Tummanharmaa teksti */
+}
+
+.badge-approved {
+  background-color: #81c784;  /* Tummempi vihreä (hyväksytty) */
+  color: #fff;  /* Valkoinen teksti */
+}
+
+.badge-delegated {
+  background-color: #0288d1;  /* Sinivihreä (delegoitava) */
+  color: #fff;  /* Valkoinen teksti */
+}
+
+.badge-resolved {
+  background-color: #388e3c;  /* Vaaleanvihreä (ratkaistu) */
+  color: #fff;  /* Valkoinen teksti */
+}
+
+.badge-in_progress {
+  background-color: #ffeb3b;  /* Kirkas keltainen (käynnissä) */
+  color: #333;  /* Tummanharmaa teksti */
+}
+
+.badge-closed {
+  background-color: #333; /* Vihreä (suljettu) */
+  color: #fff;
+}
+
+.badge-rejected {
+  background-color: #e53935;  /* Tummempi punainen (hylätty) */
+  color: #fff;  /* Valkoinen teksti */
+}
+
+.calendar-tasks-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+
+/* Vikailmoitusten lista */
+.fault-reports-container {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+/* Taulukon otsikot */
+.fault-reports-header {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr 1fr 2fr 1fr 2fr 1fr;
+  background-color: #f4f4f4;
+  padding: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Taulukon rivit */
+.fault-reports-body .fault-report {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr 1fr 2fr 1fr 2fr 1fr;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Tyylit yksittäisille kentille */
+.fault-reports-body .fault-report div {
+  padding: 5px;
+}
+
+/* Lomakkeen kenttien tyylit */
+form input, form select, form textarea {
+  width: 100%;
+  padding: 8px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Lomake-napin tyyli */
+form button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #0056b3;
+}
+
+/* Lisää responsiivisuus */
+@media (max-width: 768px) {
+  .fault-reports-header, .fault-reports-body .fault-report {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}

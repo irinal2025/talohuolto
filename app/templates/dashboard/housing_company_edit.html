@@ -1,0 +1,37 @@
+{% extends "base_dashboard.html" %}
+
+{% block dashboard_content %}
+<h1>Muokkaa taloyhtiön tietoja</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.name.label }} {{ form.name }}
+    </div>
+    <div>
+        {{ form.address.label }} {{ form.address }}
+    </div>
+    <div>
+        {{ form.city.label }} {{ form.city }}
+    </div>
+    <div>
+        {{ form.postal_code.label }} {{ form.postal_code }}
+    </div>
+    <div>
+        {{ form.year_of_completion.label }} {{ form.year_of_completion }}
+    </div>
+    <div>
+        {{ form.area.label }} {{ form.area }}
+    </div>
+    <div>
+        {{ form.manager_name.label }} {{ form.manager_name }}
+    </div>
+    <div>
+        {{ form.manager_phone.label }} {{ form.manager_phone }}
+    </div>
+    <div>
+        {{ form.manager_email.label }} {{ form.manager_email }}
+    </div>
+    <button type="submit"  class="btn btn-primary btn-sm">Tallenna</button>
+    <a href="{{ url_for('main.housing_company') }}" class="btn btn-secondary">Peruuta</a> <!-- Peruutuspainike -->
+</form>
+{% endblock %}

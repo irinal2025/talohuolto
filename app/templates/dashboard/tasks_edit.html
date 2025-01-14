@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+Huoltokirja ja tehtävät - Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <aside class="sidebar">
+        {% include "dashboard_nav.html" %}
+    </aside>
+
+    <!-- Dashboardin sisältö -->
+    <section class="dashboard-content">
+        <h1>Huoltokirja ja tehtävät</h1>
+
+        <!-- Tehtävien luontilomake -->
+        <section class="dashboard-section">
+            <h2>Tehtävien hallinta</h2>
+
+            <form method="POST">
+                {{ form.hidden_tag() }}
+            
+                <label for="task_name">Tehtävän nimi:</label>
+                {{ form.task_name(class="form-control") }}
+            
+                <label for="category">Kategoria:</label>
+                {{ form.category(class="form-control") }}
+            
+                <label for="start_date">Aloituspäivä:</label>
+                {{ form.start_date(class="form-control") }}
+            
+                <label for="end_date">Päättyy:</label>
+                {{ form.end_date(class="form-control") }}
+            
+                <label for="priority">Prioriteetti:</label>
+                {{ form.priority(class="form-control") }}
+            
+                <button type="submit" class="btn btn-primary btn-sm">Tallenna muutokset</button>
+                <a href="{{ url_for('main.manage_tasks') }}" class="btn btn-secondary">Peruuta</a> <!-- Peruutuspainike -->
+            </form>
+        </section>
+
+
+    </section>
+</div>
+{% endblock %}

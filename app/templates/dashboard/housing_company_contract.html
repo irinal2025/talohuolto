@@ -1,0 +1,47 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+Taloyhtiön tiedot - Hallintapaneeli - TaloHuolto
+{% endblock %}
+
+{% block dashboard_content %}
+<h1>Sopimukset</h1>
+
+<h2>Nykyiset sopimukset</h2>
+
+<ul>
+    {% if contracts %}
+        {% for contract in contracts %}
+            <li>
+                <strong>{{ contract.contract_type }}:</strong> {{ contract.company_name }}
+                {% if current_user.is_administrator() %}
+                <form action="{{ url_for('main.delete_contract', contract_id=contract.id) }}" method="POST" class="form-inline">
+                    {{ form.hidden_tag() }}
+                    <button type="submit" class="btn btn-danger">Poista</button>
+                </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    {% else %}
+        <li>>Ei sopimuksia</li>
+    {% endif %}
+</ul>
+
+<div class="border-top my-3"></div>
+
+<h2>Lisää uusi sopimus</h2>
+<form action="{{ url_for('main.housing_company_contracts') }}" method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        <label for="contract_type">Sopimustyyppi</label>
+        {{ form.contract_type(class="form-control") }}
+    </div>
+    <div class="form-group">
+        <label for="company_name">Yrityksen nimi</label>
+        {{ form.company_name(class="form-control") }}
+    </div>
+    <button type="submit" class="btn btn-primary">Lisää sopimus</button>
+</form>
+
+
+{% endblock %}

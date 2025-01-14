@@ -1,0 +1,55 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+Muokkaa Vikailmoitusta - Hallintapaneeli - TaloHuolto
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="container">
+  <h1>Muokkaa Vikailmoitusta</h1>
+
+  <!-- Lomake vikailmoituksen muokkaamiseen -->
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <input type="hidden" name="task_id" value="{{ fault_report.id }}">
+    
+    <label for="issue">Vian nimi:</label>
+    {{ form.issue(class="form-control") }}
+
+
+    <label for="reporter_name">Ilmoittajan nimi:</label>
+    {{ form.reporter_name(class="form-control", readonly=True) }}
+
+    <label for="email">Ilmoittajan sähköposti:</label>
+    {{ form.email(class="form-control", readonly=True) }}
+
+    <label for="issue_description">Vian kuvaus:</label>
+    {{ form.issue_description(class="form-control", readonly=True) }}
+
+    <label for="actions">Toimenpiteet:</label>
+    {{ form.actions(class="form-control") }}
+
+    <label for="status">Tila:</label>
+    {{ form.status(class="form-control") }}
+
+    <button type="submit"  class="btn btn-primary btn-sm">Päivitä vikailmoitus</button>
+    <a href="{{ url_for('main.manage_faultreport') }}" class="btn btn-secondary">Peruuta</a> <!-- Peruutuspainike -->
+    
+  </form>
+
+  <section class="status-explanation">
+    <h2>Vikailmoituksen tilat</h2>
+    <p>Alla on selitykset eri vikailmoituksen tiloille:</p>
+    <ul>
+        <li><strong><span class="badge badge-pending">Odottaa</span></strong>: Vikailmoitus on vastaanotettu ja odottaa käsittelyä.</li>
+        <li><strong><span class="badge badge-approved">Hyväksytty</span></strong>: Vikailmoitus on hyväksytty ja sille on suunniteltu toimenpiteet.</li>
+        <li><strong><span class="badge badge-delegated">Delegoitava</span></strong>: Vikailmoitus on siirretty eteenpäin asian käsittelemiseksi muulle taholle.</li>
+        <li><strong><span class="badge badge-in_progress">Käynnissä</span></strong>: Työ vikailmoituksen ratkaisemiseksi on aloitettu.</li>
+        <li><strong><span class="badge badge-resolved">Ratkaistu</span></strong>: Vika on löydetty ja ongelma on ratkaistu.</li>
+        <li><strong><span class="badge badge-closed">Suljettu</span></strong>: Vikailmoitus on käsitelty loppuun ja suljettu, ei tarvitse lisätoimenpiteitä.</li>
+        <li><strong><span class="badge badge-rejected">Hylätty</span></strong>: Vikailmoitus on hylätty, eikä sille tehdä toimenpiteitä.</li>
+        </ul>
+    </section>
+
+</div>
+{% endblock %}

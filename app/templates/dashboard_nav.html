@@ -1,0 +1,62 @@
+<!-- Dashboardin vasemman puolen navigaatio -->
+<ul class="nav flex-column">
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('main.user') }}">
+      {% if current_user.is_authenticated %} 
+         {# Check if the user is authenticated #}
+
+         
+         {% if current_user.is_administrator() %}
+            <i class="fa fa-user-astronaut"></i>
+                 {{ current_user.username }}
+         {% else %}
+            <i class="fa fa-laugh-wink"></i>
+                {{ current_user.username }}
+         {% endif %}
+      {% else %}
+              <i class="fa-solid fa-face-frown" title="You are not logged in."></i>
+              TH Admin
+      {% endif %}
+    </a>
+  </li>
+  <li class="nav-item nav-item-divider">
+    <a class="nav-link" href="{{ url_for('main.dashboard') }}"><i class="fa fa-chart-line"></i>Hallintapaneeli</a></a>
+  </li>
+  {% if current_user.is_administrator() %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('main.manage_residents') }}"><i class="fa fa-users"></i>Asukkaiden hallinta</a>
+  </li>
+  {% endif %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('main.manage_tasks') }}"><i class="fa fa-tools"></i>Huoltokirja ja tehtävät</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('main.manage_faultreport') }}"><i class="fa fa-exclamation-triangle"></i>Vikailmoitukset</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('main.manage_calendar') }}"><i class="fa fa-calendar-alt"></i>Huoltokalenteri</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('main.housing_company') }}"><i class="fa fa-building"></i>Taloyhtiön tiedot</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('main.manage_energy') }}"><i class="fa fa-bolt"></i>Energiatehokkuus</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('main.manage_documents') }}"><i class="fa fa-file-alt"></i>Raportit ja dokumentit</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('main.manage_talkoot') }}"><i class="fa fa-hands-helping"></i>Talkoot</a>
+  </li>
+  {% if current_user.is_administrator() %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('main.manage_talkoot_hallinta') }}"><i class="fa fa-hands-helping"></i>Talkoiden hallinta</a>
+  </li>
+  {% endif %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('main.manage_notifications') }}"><i class="fa fa-bullhorn"></i>Tiedotteet</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('main.manage_fees') }}"><i class="fa fa-euro"></i>Vastikemaksut</a>
+  </li>
+</ul>

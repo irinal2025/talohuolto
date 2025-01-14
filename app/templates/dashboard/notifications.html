@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Tiedotteet - Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <aside class="sidebar">
+        {% include "dashboard_nav.html" %}
+    </aside>
+    <!-- Dashboardin sisältö -->
+    <section class="dashboard-content">
+        <h1>Tiedotteet</h1>
+
+        <!-- Tiedotteiden lista -->
+        <section class="tiedotteiden-lista">
+            <h2>Viimeisimmät tiedotteet</h2>
+            <ul>
+                {% for notification in notifications %}
+                    <li>
+                        <strong>{{ notification.title }}</strong>  
+                        <small>Julkaistu: {{ notification.publish_date }}</small>
+                        <p>{{ notification.content }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <!--section class="dashboard-section">
+            <form method="POST">
+                <input type="text" name="title" placeholder="Otsikko" required>
+                <textarea name="content" placeholder="Tiedotteen sisältö" required></textarea>
+                <button type="submit">Lisää tiedote</button>
+            </form>
+            <ul>
+                {% for notification in notifications %}
+                <li><strong>{{ notification.title }}</strong>: {{ notification.content }}</li>
+                {% endfor %}
+            </ul>
+        </section-->
+        {% if current_user.is_administrator() %}
+        <div class="border-top my-3"></div>
+         <!-- Uusien tiedotteiden lisäys -->
+        <section class="tiedotteen-lisays">
+            <h2>Luo uusi tiedote</h2>
+            <form >
+                {{ form.hidden_tag() }}
+
+                <label for="otsikko">Otsikko:</label>
+                {{ form.title }}
+                
+                <label for="sisalto">Sisältö:</label>
+                {{ form.content  }}
+                
+                <label for="julkaisupvm">Julkaisupäivä:</label>
+                {{ form.publish_date  }}
+                
+                <button type="submit" class="btn btn-primary btn-sm">Tallenna</button>
+            </form>
+        </section>
+        {% endif %}
+
+
+    </section>
+    
+</div>
+{% endblock %}

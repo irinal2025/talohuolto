@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %} Mikä on TaloHuolto? - TaloHuolto {% endblock %}
+
+{% block content %}
+<section class="tips-container">
+
+
+    <!-- Tervetuloa-osio -->
+    <!--section>
+        <h1>Tervetuloa TaloHuoltoon</h1>
+        <p>TaloHuolto auttaa sinua pitämään taloyhtiön asiat järjestyksessä.</p>
+    </section-->
+
+    <section>
+        <div class="clearfix">
+            <img src="{{ url_for('static', filename='img/talohuolto1.png') }}" alt="Huoltokirja ja kunnossapito" style="border-radius:8px;" class="col-md-3 float-md-end mb-3 ms-md-3" alt="...">
+        <h1>Tervetuloa TaloHuoltoon</h1>
+        <p>TaloHuolto on moderni ratkaisu taloyhtiöiden hallintaan. Sovelluksen avulla voit seurata huoltotöitä, hallita taloyhtiön tietoja ja parantaa energiatehokkuutta.</p>
+        </div>
+    </section>
+    
+    <section>
+        <h2>Kenelle TaloHuolto on suunniteltu?</h2>
+
+        <div class="row mb-3">
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Asukkaille</h5>
+                  <p class="card-text">Ilmoita vioista, osallistu talkoisiin ja pysy ajan tasalla taloyhtiön tapahtumista.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Hallitukselle</h5>
+                  <p class="card-text">Hallitse taloyhtiön tiedot, raportit ja sopimukset helposti yhdestä paikasta.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+    </section>
+    
+    <section>
+      <h2>Pääominaisuudet</h2>
+      <ul>
+          <li><strong>Huoltokirja:</strong> Seuraa huoltotöitä ja tehtäviä.</li>
+          <li><strong>Huoltokalenteri:</strong> Suunnittele ja aikatauluta huoltotoimet.</li>
+          <li><strong>Energiatehokkuus:</strong> Paranna taloyhtiön energiankulutusta.</li>
+          <li><strong>Vikailmoitukset:</strong> Raportoi ja seuraa korjaustoimenpiteitä.</li>
+          <li><strong>Raportit ja dokumentit:</strong> Pidä tärkeät tiedot ja sopimukset tallessa.</li>
+      </ul>
+    </section>
+    
+    <section>
+        <h2>Aloita jo tänään!</h2>
+        <p>Rekisteröidy nyt ja ota ensimmäinen askel tehokkaampaan taloyhtiön hallintaan.</p>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Rekisteröidy</a>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">Kirjaudu sisään</a>
+    </section>
+
+
+
+</section>
+
+
+{% endblock %}

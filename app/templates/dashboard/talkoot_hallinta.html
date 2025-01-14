@@ -1,0 +1,42 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+Talkoiden hallinta (Admin) - Hallintapaneeli - TaloHuolto
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="container">
+  <h1>Talkoiden hallinta</h1>
+
+
+
+  <!-- Lomake adminille uusien talkoiden lisäämiseksi -->
+  <section class="mb-5">
+    <h2>Lisää talkoot:</h2>
+    <form method="POST" action="{{ url_for('main.manage_talkoot_hallinta') }}">
+      {{ form.hidden_tag() }}  <!-- Tämä lisää CSRF-tunnuksen lomakkeeseen -->
+      <label for="date">Päivämäärä:</label>
+      {{ form.date() }}  <!-- Tämä renderöi DateField-kentän oikein -->
+
+      <label for="equipment">Varusteet:</label>
+      {{ form.equipment() }}  <!-- Tämä renderöi StringField-kentän oikein -->
+
+
+      <button type="submit" class="btn btn-primary">Lisää Talkoo</button>
+
+    </form>
+  </section>
+  
+  <section>
+
+  <h3>Kaikki Talkoot</h3>
+<ul>
+  {% for talkoo in talkoot %}
+    <li>{{ talkoo.date }} - {{ talkoo.equipment }}</li>
+  {% endfor %}
+</ul>
+</section>
+  
+
+</div>
+{% endblock %}

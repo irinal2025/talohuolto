@@ -1,0 +1,116 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+Vikailmoitukset - Hallintapaneeli - TaloHuolto
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="container">
+  <h1>Vikailmoitukset</h1>
+  <p>Ilmoita taloyhtiön huollon tarvitsemista vioista tai ongelmista.</p>
+
+  <section class="vikailmoitukset-lista">
+    <h2>Kaikki vikailmoitukset</h2>
+    <p>Tässä näkyvät kaikki asukkailta tulleet vikailmoitukset.</p>
+  
+    <!-- Responsiivinen taulukko -->
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Ilmoitettu vika</th>
+            <th>Ilmoittaja</th>
+            <th>Päivämäärä</th>
+            <th>Toimenpiteet</th>
+            <th>Tila</th>
+            <th>Vian kuvaus</th>
+            <th><!--Toiminta--></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for report in fault_reports %}
+          <tr class="{% if report.status == 'closed' %}report-closed table-success{% endif %}">
+            <td>{{ report.id }}</td>
+            <td>{{ report.issue }}</td>
+            <td>{{ report.reporter_name }}</td>
+            <td>{{ report.report_date }}</td>
+            <td>{{ report.actions }}</td>
+            <td>
+              <span class="badge badge-{{ report.status|lower }}">
+                {% if report.status == 'pending' %}
+                    Odottaa
+                {% elif report.status == 'approved' %}
+                    Hyväksytty
+                {% elif report.status == 'delegated' %}
+                    Delegoitava
+                {% elif report.status == 'in_progress' %}
+                    Käynnissä
+                {% elif report.status == 'resolved' %}
+                    Ratkaistu
+                {% elif report.status == 'closed' %}
+                    Suljettu
+                {% elif report.status == 'rejected' %}
+                    Hylätty
+                {% else %}
+                    {{ report.status }}
+                {% endif %}
+              </span>
+            </td>
+            <td>{{ report.issue_description }}</td>
+            <td>
+              <a href="{{ url_for('main.edit_fault_report', task_id=report.id) }}" class="btn btn-primary btn-sm">Päivitä</a>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="8" class="text-center">Ei vikailmoituksia.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+      <section class="status-explanation mb-5">
+        <h2>Vikailmoituksen tilat</h2>
+        <p>Alla on selitykset eri vikailmoituksen tiloille:</p>
+        <ul>
+            <li><strong><span class="badge badge-pending">Odottaa</span></strong>: Vikailmoitus on vastaanotettu ja odottaa käsittelyä.</li>
+            <li><strong><span class="badge badge-approved">Hyväksytty</span></strong>: Vikailmoitus on hyväksytty ja sille on suunniteltu toimenpiteet.</li>
+            <li><strong><span class="badge badge-delegated">Delegoitava</span></strong>: Vikailmoitus on siirretty eteenpäin asian käsittelemiseksi muulle taholle.</li>
+            <li><strong><span class="badge badge-in_progress">Käynnissä</span></strong>: Työ vikailmoituksen ratkaisemiseksi on aloitettu.</li>
+            <li><strong><span class="badge badge-resolved">Ratkaistu</span></strong>: Vika on löydetty ja ongelma on ratkaistu.</li>
+            <li><strong><span class="badge badge-closed">Suljettu</span></strong>: Vikailmoitus on käsitelty loppuun ja suljettu, ei tarvitse lisätoimenpiteitä.</li>
+            <li><strong><span class="badge badge-rejected">Hylätty</span></strong>: Vikailmoitus on hylätty, eikä sille tehdä toimenpiteitä.</li>
+        </ul>
+    </section>
+  </section>
+  
+
+  {% if kiitos %}
+      <p><strong>Kiitos vian ilmoittamisesta! Tiedot on vastaanotettu ja käsitellään pian.</strong></p>
+  {% endif %}
+  
+    <!-- Lomake vikailmoituksen lisäämiseen -->
+    <h2>Lisää uusi vikailmoitus</h2>
+    <form method="POST">
+        <input type="hidden" name="add_fault">
+        <input type="hidden" id="actions" name="actions" value="Vastaanotettu">
+        
+        <label for="issue">Vian nimi:</label>
+        <input type="text" id="issue" name="issue" required><br>
+
+        <label for="reporter_name">Ilmoittajan nimi:</label>
+        <input type="text" id="reporter_name" name="reporter_name" required><br>
+
+        <label for="email">Ilmoittajan sähköposti:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="issue_description">Vian kuvaus:</label>
+        <textarea id="issue_description" name="issue_description" required></textarea><br>
+
+        <button type="submit"  class="btn btn-primary btn-sm">Lisää vikailmoitus</button>
+    </form>
+
+</div>
+{% endblock %}

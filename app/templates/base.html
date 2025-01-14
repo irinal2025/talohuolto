@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Pientaloyhtiön sovellus{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+
+
+        {% if extra_style %}
+            <link rel="stylesheet" href="{{ url_for('static', filename=extra_style + '.css') }}">
+        {% endif %}
+   
+
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon-32x32.png') }}" sizes="32x32">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon-192x192.png') }}" sizes="192x192">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon-16x16.png') }}" sizes="16x16">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+</head>
+<body>
+    <!-- Päänavigaatio -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="{{ url_for('main.index') }}">
+                {% include "logo.html" %}
+                <!--img src="{{ url_for('static', filename='img/favicon-32x32.png') }}" alt="" height="24" class="d-inline-block align-text-top"-->
+                TaloHuolto
+                </a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.about') }}">Mikä on TaloHuolto?</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.tips') }}">Vinkkejä pienen taloyhtiön ylläpitoon</a>
+                  </li>
+                  {% if current_user.is_authenticated %} 
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.dashboard') }}">Hallintapaneeli <i class="fa fa-chart-line"></i></a>
+                  </li>
+                  {% endif %}
+                  {% if not current_user.is_authenticated %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('auth.register') }}">Rekisteröidy <i class="fa fa-user-plus"></i></a>
+                  </li>
+                  {% endif %}
+                  <!--li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('auth.login') }}">Kirjaudu sisään</a>
+                  </li-->
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out <i class="fa fa-right-from-bracket"></i></a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Kirjaudu sisään <i class="fa fa-right-to-bracket"></i></a></li>
+                    {% endif %}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+    </header>
+    <main>
+        <!-- Viestien tulostaminen vain auth-sivuilla -->
+        {% if 'auth' in request.endpoint %}
+            {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+        {% block page_content %}
+        {% endblock %}
+    </main>
+
+    <footer id="footer">
+        <span>&copy; TaloHuolto, Irina Lisovskaja, 2025</span>
+        <div class="footer-row">
+            <div class="col">
+                <h3>TaloHuolto</h3>
+                <p>&copy; 2025</p> 
+                <p>Kaikki oikeudet pidätetään</p>
+            </div>
+            <div class="col">
+                <div>
+                    <p>TaloHuolto auttaa taloyhtiöiden asukkaita ja hallitusta hallitsemaan ja seuraamaan kiinteistön kunnossapito-, hoito- ja parannustehtäviä. TaloHuolto helpottaa tiedon jakamista, tehtävien hallintaa ja parantaa viestintää asukkaiden/hallituksen välillä.</p>
+                </div>
+            </div>  
+            <div class="col">
+                <h3>Pikalinkit</h3>
+                <ul>
+                    <li><a href="{{ url_for('main.index') }}">Etusivu</a></li>
+                    <li><a href="{{ url_for('auth.register') }}">Rekisteröidy</a></li>
+                    <li><a href="{{ url_for('main.tips') }}">Vinkit</a></li>
+                    <li><a href="{{ url_for('main.about') }}">Tietoa meistä</a></li>
+                    <li><a href="{{ url_for('main.terms') }}">Käyttöehdot</a></li>
+                    <li><a href="{{ url_for('main.contact') }}">Ota yhteyttä</a></li>
+                </ul>
+            </div>
+            <div class="col">
+                <div class="socialmediaicons">
+                    <h3>Seuraa meitä</h3>
+                    <!-- font awesome icons -->
+                    <a href="#" class="ffa fa-facebook"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256h0z"/></svg></a>
+                    <a href="#" class="ffa fa-x-twitter"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg></a>
+                    <a href="#" class="ffa fa-instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></a>
+                    <a href="#" class="ffa fa-tiktok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M448 209.9a210.1 210.1 0 0 1 -122.8-39.3V349.4A162.6 162.6 0 1 1 185 188.3V278.2a74.6 74.6 0 1 0 52.2 71.2V0l88 0a121.2 121.2 0 0 0 1.9 22.2h0A122.2 122.2 0 0 0 381 102.4a121.4 121.4 0 0 0 67 20.1z"/></svg></a>
+                  </div>
+            </div>
+        </div>
+        
+        <div class="footer-btt">
+            <button type="button" id="backToTopBtn" title="Go to top" class="backToTopButton">Back to top <!--&uarr;--> <span class="arrowup"></span></button>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Javascripts -->  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Font Awesome Javascripts -->
+    <script src="https://kit.fontawesome.com/daff192c44.js" crossorigin="anonymous"></script>
+
+    <script src="{{ url_for('static', filename='site.js') }}"></script>
+</body>
+</html>
