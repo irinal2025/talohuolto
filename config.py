@@ -55,12 +55,9 @@ class XamppConfig(Config):
     print("SQLALCHEMY_DATABASE_URI: "+SQLALCHEMY_DATABASE_URI)
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-
-
-#class ProductionConfig(XamppConfig):
-#    DEBUG = False
-#    DIR = '/home'
+    DEBUG = False
+    DIR = '/home'
+    #SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
     #KUVAPOLKU = os.path.join(DIR, Config.UPLOAD_FOLDER)
 
 config = {
@@ -68,6 +65,5 @@ config = {
     'testing': TestingConfig,
     'production': ProductionConfig,
     'xampp': XamppConfig,
-    #'default': DevelopmentConfig
     'default': XamppConfig
 }
