@@ -5,12 +5,12 @@
 
 {% block content %}
 <div class="dashboard-container">
-    <aside class="sidebar">
+    <aside class="sidebar" id="dashboardSidebar">
         {% include "dashboard_nav.html" %}
     </aside>
     <!-- Dashboardin sisältö -->
 
-    <section class="dashboard-content">
+    <section class="dashboard-content" id="dashboardContent">
         {% for message in get_flashed_messages() %}
         <div class="alert alert-warning">
             <button type="button" class="close" data-dismiss="alert">&times;</button>

@@ -38,3 +38,21 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
+
+//Dashboardin sidebarin toggler
+const toggler = document.getElementById('asideToggler');
+const dashboard = document.getElementById('dashboardSidebar');
+const togglerIcon = toggler.querySelector('i');
+const contentDashboard  = document.getElementById('dashboardContent');
+
+toggler.addEventListener('click', () => {
+    dashboard.classList.toggle('dashboardnav-hidden');
+
+    if (togglerIcon.classList.contains('fa-angles-left')) {
+        togglerIcon.classList.replace('fa-angles-left', 'fa-angles-right');
+    } else {
+        togglerIcon.classList.replace('fa-angles-right', 'fa-angles-left');
+    }
+
+    contentDashboard.classList.toggle('dashboard-full-width');
+});
