@@ -1,39 +1,40 @@
-
-
-
-//Lisää aktiivisen navigointilinkin osoittaminen Javascriptillä ja CSS:llä:
 document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll("nav a, ul.nav a").forEach((link) => {
-        //if (link.href === window.location.href) 
-        var url = (link.href),
-            hash = url.split('#')[1];
-        if (link.pathname === window.location.pathname) {
-            if (hash) {
-                //alert(hash)
-            } else {
-                link.classList.add("active");
-                link.setAttribute("aria-current", "page");
-            }
+  // Lisää aktiivisen navigointilinkin osoittaminen
+  document.querySelectorAll("nav a, ul.nav a").forEach((link) => {
+    const url = link.href;
+    const hash = url.split('#')[1];
 
-        }
+    if (link.pathname === window.location.pathname) {
+      if (!hash) {
+        link.classList.add("active");
+        link.setAttribute("aria-current", "page");
+      }
+    }
+  });
+
+  // Scroll to top button functionality
+  const myBackToTopButton = document.getElementById("backToTopBtn");
+  if (myBackToTopButton) {
+    myBackToTopButton.addEventListener("click", function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // Close alert button functionality
+  document.querySelectorAll('.alert .close').forEach(function(button) {
+    button.addEventListener('click', function() {
+      const alert = button.closest('.alert');
+      alert.style.display = 'none';
     });
   });
 
-
-// When the user clicks on the button, scroll to the top of the document
-const myBackToTopButton = document.getElementById("backToTopBtn");
-
-myBackToTopButton.addEventListener("click", function() {
-  document.body.scrollTop = 0; // For Safari
-  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  // Navbar-toggler functionality
+  const toggler = document.querySelector('.navbar-toggler');
+  const icon = document.querySelector('.navbar-toggler-icon');
+  if (toggler && icon) {
+    toggler.addEventListener('click', function() {
+      icon.classList.toggle('th-navbar-toggled');
+    });
+  }
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const closeButtons = document.querySelectorAll('.alert .close');
-    closeButtons.forEach(function (button) {
-      button.addEventListener('click', function () {
-        const alert = button.closest('.alert');
-        alert.style.display = 'none';
-      });
-    });
- });

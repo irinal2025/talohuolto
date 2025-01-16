@@ -18,10 +18,8 @@
                     {{ wtf.quick_form(form,novalidate=True,extra_classes='needs-validation') }}
                 </div>
                 <p>Onko sinulla jo TaloHuolto tunnus? <a href="{{ url_for('auth.login') }}">Kirjaudu sisään</a></p>
-        
             </div>
-
-            <div class="col">
+            <div class="col col-form-image ">
                 <!-- Esittelykuva -->
                 <img src="{{ url_for('static', filename='img/rekisteroidy.jpg') }}" alt="Huoltokirja ja kunnossapito" width="100%" height="auto">
             </div>

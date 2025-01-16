@@ -1,18 +1,17 @@
 <!-- Dashboardin vasemman puolen navigaatio -->
-<ul class="nav flex-column">
+<ul class="nav flex-column" id="navbarDashboard" aria-label="Dashboardin navigaatio">
   <li class="nav-item">
     <a class="nav-link" href="{{ url_for('main.user') }}">
       {% if current_user.is_authenticated %} 
          {# Check if the user is authenticated #}
 
-         
          {% if current_user.is_administrator() %}
             <i class="fa fa-user-astronaut"></i>
-                 {{ current_user.username }}
          {% else %}
             <i class="fa fa-laugh-wink"></i>
-                {{ current_user.username }}
          {% endif %}
+         <span class="nav-username">{{ current_user.username }}</span>
+
       {% else %}
               <i class="fa-solid fa-face-frown" title="You are not logged in."></i>
               TH Admin
