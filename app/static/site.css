@@ -76,6 +76,7 @@ nav i.fa {
     padding: 0;
     flex-direction: column;
     flex-wrap: nowrap;
+    overflow: hidden;
 }
 
 .sidebar ul li {
@@ -734,6 +735,8 @@ form button:hover {
     text-transform: uppercase;
     padding: .5rem 0;
     text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .sidebar .nav-item .nav-link i {
     display: block;
@@ -747,14 +750,3 @@ form button:hover {
   }
 }
 
-@media (max-width: 576px) {
-  span.nav-username {
-    max-width: 50px;
-    width: 50px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: block;
-    margin: 0 auto;
-  }
-}
