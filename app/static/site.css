@@ -45,13 +45,30 @@ nav i.fa {
     transform: translateX(0); /* Alkuasento */
 }
 .sidebar.dashboardnav-hidden {
-  transform: translateX(-100%); /* Liikkuu kokonaan vasemmalle */
-  width: 0;
+  /*transform: translateX(-100%);*/ /* Liikkuu kokonaan vasemmalle */
+  transform: translateX(-calc(20% - 40px));
+  /*width: 0;*/
+  width: 40px;
 }
 
 .sidebar.dashboardnav-hidden ul {
-  width: 0;
+  /*width: 0;*/
+  width: 40px;
   overflow: hidden;
+}
+.sidebar.dashboardnav-hidden ul i.fa {
+  display: block;
+  font-size: 23px;
+  min-height: 23px;
+  margin: 0 0 3px;
+}
+.sidebar.dashboardnav-hidden ul .nav-link {
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
+}
+.sidebar.dashboardnav-hidden ul .nav-text {
+  display: none;
 }
 
 .sidebar ul {
@@ -321,7 +338,8 @@ footer .footer-btt {
     padding: 20px;
 }
 .dashboard-content.dashboard-full-width {
-  width: 100%;
+  /*width: 100%;*/
+  width: calc(100% - 40px);
   margin-left: 0; 
   transition: width 0.3s ease;
 }
