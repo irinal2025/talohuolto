@@ -12,6 +12,7 @@ def get_datetime(tz=helsinki_tz, format='%Y-%m-%d %H:%M:%S'):
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
+    WTF_CSRF_CHECK_DEFAULT = False  # Ohitetaan lomakkeiden oletustarkistus
     SECURITY_PASSWORD_SALT = os.environ.get('SECURITY_PASSWORD_SALT') or 'my_unique_salt'
     #MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.googlemail.com')
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.gmail.com')

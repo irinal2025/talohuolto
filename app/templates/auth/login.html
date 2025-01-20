@@ -20,7 +20,33 @@
             </div>
             <div class="col">
               <div class="lomake">
-              {{ wtf.quick_form(form,novalidate=True,extra_classes='needs-validation') }}
+              <!-- {{ wtf.quick_form(form,novalidate=True,extra_classes='needs-validation') }}-->
+              <form method="POST">
+                {{ form.hidden_tag() }}
+        
+                <div class="form-group">
+                    {{ form.email.label }}
+                    {{ form.email(class="form-control") }}
+                </div>
+        
+                <div class="form-group">
+                    {{ form.password.label }}
+                    <div class="password-wrapper">
+                        {{ form.password() }}
+                        <i id="toggle-password" class="fas fa-eye"></i> <!-- Silmäkuvake -->
+                    </div>
+                </div>
+        
+                <!--div class="form-check">
+                    {{ form.remember_me() }}
+                    {{ form.remember_me.label }}
+                </div-->
+        
+                <div>
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+
             </div>
                 <p>Unohditko salasanan? <a href="{{ url_for('auth.password_reset_request') }}">Klikkaa tästä nollataksesi sen</a>.</p>
                 <p>Eikö sinulla ole vielä TaloHuolto tunnusta? <a href="{{ url_for('auth.register') }}">Rekisteröidy täällä</a>.</p>                
@@ -31,3 +57,6 @@
   
 </section>
 {% endblock %}
+
+
+{% block extra_script %}<script src="{{ url_for('static', filename='login.js') }}"></script>{% endblock %}

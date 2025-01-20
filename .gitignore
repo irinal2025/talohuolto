@@ -41,9 +41,18 @@ nosetests.xml
 # Virtual environment
 venv
 .env
+*.env
 .flaskenv
 *.json
 profiilikuvat/*
 !profiilikuvat/default_profile.png
 *.txt
 !requirements.txt
+key.pem
+cert.pem
+*.crt
+*.key
+*.pem
+
+*.log
+logs/

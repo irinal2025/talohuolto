@@ -8,11 +8,14 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from config import config, get_datetime
 from flask_wtf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect, generate_csrf, CSRFError
 import logging
 import sys
 from datetime import datetime
 import pytz
 from .filters import format_date
+from flask_cors import CORS
+import ssl
 
 
 class FinnishFormatter(logging.Formatter):
@@ -35,6 +38,9 @@ login_manager.login_view = 'auth.login'
 
 def create_app(config_name='default'):
     app = Flask(__name__)
+    #CORS(app, resources={r"/reactapi/*": {"origins": "https://localhost:5173"}})  # Rajoita CORS vain React-sovellukseen
+    #CORS(app, resources={r"/reactapi/*": {"origins": "http://localhost:5173"}})  # Rajoita CORS vain React-sovellukseen
+    CORS(app, resources={r"/reactapi/*": {"origins": "http://localhost:5173"}}, supports_credentials=True)
     app.config.from_object(config[config_name])
 
     # Debug-tilan asettaminen
@@ -84,8 +90,8 @@ def create_app(config_name='default'):
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
-    #from .reactapi import reactapi as reactapi_blueprint
-    #app.register_blueprint(reactapi_blueprint, url_prefix='/reactapi')
+    from .reactapi import reactapi as reactapi_blueprint
+    app.register_blueprint(reactapi_blueprint, url_prefix='/reactapi')
 
     # Suodattimen rekisteröinti
     app.jinja_env.filters['format_date'] = format_date

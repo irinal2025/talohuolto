@@ -70,7 +70,7 @@
     </header>
     <main>
         <!-- Viestien tulostaminen vain auth-sivuilla -->
-        {% if 'auth' in request.endpoint %}
+        {% if request.endpoint and 'auth' in request.endpoint %}
             {% for message in get_flashed_messages() %}
             <div class="alert alert-warning">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -133,6 +133,9 @@
     <script src="https://kit.fontawesome.com/daff192c44.js" crossorigin="anonymous"></script>
 
     <script src="{{ url_for('static', filename='site.js') }}"></script>
+
+    {% block extra_script %}
+    {% endblock %}
 
 </body>
 </html>
