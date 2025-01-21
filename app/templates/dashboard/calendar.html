@@ -39,7 +39,11 @@ Huoltokalenteri - Hallintapaneeli - TaloHuolto
   <ul>
     {% for work in tulevat_huoltotyot %}
     <li>
-      <strong>{{ work.start_date|format_date }}</strong>: {{ work.task_name }}
+      <strong>{{ work.start_date|format_date }}
+        {% if work.end_date|format_date != work.start_date|format_date %}
+        - {{ work.end_date|format_date }}
+        {% endif %}
+      </strong>: {{ work.task_name }}
       <!--p>{{ work.description }}</p-->
     </li>
     {% else %}

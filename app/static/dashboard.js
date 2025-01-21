@@ -8,7 +8,7 @@ const contentDashboard  = document.getElementById('dashboardContent');
   if (localStorage.getItem('asideHidden') === 'true') {
     aside.classList.add('dashboardnav-hidden');
     toggler.querySelector('i').className = 'fa-solid fa-angles-right';
-    dashboardContent.classList.add('full-width');
+    dashboardContent.classList.add('dashboard-full-width');
   }
 
 toggler.addEventListener('click', () => {

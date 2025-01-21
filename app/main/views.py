@@ -115,10 +115,10 @@ def dashboard():
     open_fault_reports_count = FaultReport.query.filter(FaultReport.status.in_(['pending', 'in_progress', 'delegated'])).count()
 
 
-    talkoot = Talkoot.query.all()  # Hae kaikki tiedotteet
+    talkoot = Talkoot.query.filter(Talkoot.date >= datetime.now()).all()  # Hae kaikki tiedotteet
 
     # Hae kolme uusinta FaultReport-tietuetta järjestettynä julkaisuajankohdan mukaan
-    talkoot = Talkoot.query.order_by(Talkoot.date.desc()).limit(3).all()
+    talkoot = Talkoot.query.filter(Talkoot.date >= datetime.now()).order_by(Talkoot.date.asc()).limit(3).all()
 
     notifications = Notifications.query.all()  # Hae kaikki tiedotteet
 
@@ -228,6 +228,7 @@ def manage_calendar():
     # Muokkaa päivämäärät oikeaan muotoon Pythonissa ennen malliin lähettämistä
     for task in tasks:
         task.start_date = task.start_date.strftime('%d.%m.%Y')  # Muuntaa paivamaara oikeaan muotoon
+        task.end_date = task.end_date.strftime('%d.%m.%Y')  # Muuntaa paivamaara oikeaan muotoon
 
 
     # for task in tasks:
@@ -359,28 +360,106 @@ def manage_documents():
 @login_required
 def manage_talkoot():
     form = TalkootForm()
-    if form.validate_on_submit():
-        # Luo uusi talkoo
-        talkoo = Talkoot(
-            date=form.date.data,
-            equipment=form.equipment.data
-        )
-        db.session.add(talkoo)
-        db.session.commit()
+    today = date.today()
 
-        # Lisää kirjautunut käyttäjä osallistujaksi talkoisiin
-        participant = TalkootParticipants(
+    # Hae kaikki talkoot
+    tulevat_talkoot = Talkoot.query.filter(Talkoot.date >= today).order_by(Talkoot.date).all()
+    menneet_talkoot = Talkoot.query.filter(Talkoot.date < today).order_by(Talkoot.date).all()
+
+    # Hae käyttäjän osallistumiset
+    user_participations = TalkootParticipants.query.filter_by(user_id=current_user.id).all()
+    osallistuneet_talkoot_ids = {participation.talkoot_id for participation in user_participations}
+
+    # Poista jo ilmoittautuneet talkoot valintalistasta
+    vapaat_talkoot = [talkoo for talkoo in tulevat_talkoot if talkoo.id not in osallistuneet_talkoot_ids]
+
+    if request.method == 'POST':
+        # Ilmoittautuminen
+        if 'talkoo_id' in request.form:
+            talkoo_id = request.form.get('talkoo_id')
+            talkoo = Talkoot.query.get(talkoo_id)
+            pass
+
+        # Peruutus
+        elif 'cancel_id' in request.form:
+            cancel_id = request.form.get('cancel_id')
+            participation = TalkootParticipants.query.filter_by(
+                talkoot_id=cancel_id,
+                user_id=current_user.id
+            ).first()
+            if participation:
+                db.session.delete(participation)
+                db.session.commit()
+                flash('Ilmoittautuminen peruttu.', 'success')
+            else:
+                flash('Ilmoittautumista ei löytynyt.', 'warning')
+
+    return render_template(
+        'dashboard/talkoot.html',
+        form=form,
+        tulevat_talkoot=tulevat_talkoot,
+        vapaat_talkoot=vapaat_talkoot,
+        menneet_talkoot=menneet_talkoot,
+        user_participations=user_participations,
+        osallistuneet_talkoot_ids=osallistuneet_talkoot_ids
+    )
+
+@main.route('/dashboard/talkoot/cancel/<int:talkoot_id>', methods=['POST'])
+@login_required
+def talkoot_cancel_registration(talkoot_id):
+    # Peruuta ilmoittautuminen
+    talkoo_participant = TalkootParticipants.query.filter_by(user_id=current_user.id, id=talkoot_id).first()
+    
+    if talkoo_participant:
+        db.session.delete(talkoo_participant)
+        db.session.commit()
+        flash("Ilmoittautuminen peruutettu.", 'success')
+    else:
+        flash("Ilmoittautumista ei löydetty.", 'danger')
+
+    # Ohjataan takaisin talkoot-sivulle, jossa on jo päivitetty lista
+    return redirect(url_for('main.manage_talkoot'))
+
+@main.route('/dashboard/talkoot/ilmoittautuminen', methods=['POST'])
+@login_required
+def talkoot_ilmoittautuminen():
+    
+    talkoot_id = request.form.get('talkoo_id')
+    print(f"Talkoot ID: {talkoot_id}")
+    talkoo = Talkoot.query.get(talkoot_id)  # Hae talkoo ID:llä Talkoot-taulusta
+
+
+    if talkoo:
+        print(f"Talkoo löytyi: {talkoo}")
+    else:
+        print("Talkoota ei löytynyt.")
+
+
+    if talkoo:
+        # Tarkista, onko käyttäjä jo ilmoittautunut talkoisiin
+        existing_participant = TalkootParticipants.query.filter_by(
             talkoot_id=talkoo.id,
-            name=current_user.username  # Käyttäjän nimi
-        )
-        db.session.add(participant)
-        db.session.commit()
+            user_id=current_user.id
+        ).first()
 
-        return redirect(url_for('main.manage_talkoot'))
+        if not existing_participant:
+            # Lisää käyttäjä ilmoittautuneiden joukkoon
+            participant = TalkootParticipants(
+                talkoot_id=talkoo.id,
+                user_id=current_user.id,
+                name=current_user.username
+            )
+            db.session.add(participant)
+            db.session.commit()
 
-    # Hae kaikki talkoot ja osallistujat
-    talkoot = Talkoot.query.all()
-    return render_template('dashboard/talkoot.html', form=form, talkoot=talkoot)
+            flash('Ilmoittautuminen onnistui!', 'success')
+        else:
+            flash('Olet jo ilmoittautunut tähän talkooseen.', 'info')
+    else:
+        flash('Talkoota ei löytynyt.', 'danger')
+
+    # Ohjaa takaisin talkoot-sivulle
+    return redirect(url_for('main.manage_talkoot'))
 
 
 # Talkoiden hallinta
@@ -422,9 +501,10 @@ def manage_talkoot_hallinta():
 @login_required
 def housing_company():
     company = db.session.query(HousingCompany).first()  # Haetaan vain yksi taloyhtiö
+    contracts = Contract.query.filter_by(housing_company_id=HousingCompany.id).all()
     if not company:
         return "Tietoja ei löytynyt", 404
-    return render_template('dashboard/housing_company.html', company=company)
+    return render_template('dashboard/housing_company.html', company=company,contracts=contracts)
 
 
 

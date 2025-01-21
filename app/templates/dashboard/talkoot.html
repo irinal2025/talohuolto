@@ -7,6 +7,41 @@ Talkoiden hallinta - Hallintapaneeli - TaloHuolto
 {% block dashboard_content %}
 <div class="container">
   <h1>Talkoot</h1>
+  <!--
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div>
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+    -->
+
+  <!-- Omat ilmoittautumiset -->
+  <section class="omaat-ilmoittautumiset">
+    <h2>Omat ilmoittautumiset</h2>
+    <p>Tässä näkyvät talkoot, joihin olet ilmoittautunut. Voit perua ilmoittautumisen tarvittaessa.</p>
+
+    <ul>
+      {% for talkoo in user_participations %}
+      <li>
+        <strong>{{ talkoo.talkoo.date }}:</strong> {{ talkoo.talkoo.equipment }}
+
+        <!-- Näytä peruuttamisen linkki, jos käyttäjä on ilmoittautunut -->
+        <form action="{{ url_for('main.talkoot_cancel_registration', talkoot_id=talkoo.id) }}" method="POST" class="d-inline form-inline">
+            <button type="submit"  class="btn btn-primary">Peruuta ilmoittautuminen</button>
+        </form>
+      </li>
+      {% else %}
+      <li>Et ole ilmoittautunut mihinkään talkoisiin.</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <div class="border-top my-3"></div>
+
 
   <!-- Talkoiden lista -->
   <section class="talkoot">
@@ -19,15 +54,27 @@ Talkoiden hallinta - Hallintapaneeli - TaloHuolto
         <tr>
           <th>Päivämäärä</th>
           <th>Varusteet</th>
+          {% if current_user.is_administrator() %}
           <th>Osallistujat</th>
+          {% endif %}
+          <th>Ilmoittautuminen</th>
         </tr>
       </thead>
       <tbody>
-        {% for talkoo in talkoot %}
+        {% for talkoo in tulevat_talkoot %}
         <tr>
           <td>{{ talkoo.date }}</td>
           <td>{{ talkoo.equipment }}</td>
+          {% if current_user.is_administrator() %}
           <td>{{ talkoo.participants|map(attribute='name')|join(', ') or 'Ei osallistujaa' }}</td> <!-- Osallistujat näkyvät täällä -->
+          {% endif %}
+          <td>
+            {% if talkoo.id in osallistuneet_talkoot_ids %}
+            <span class="badge badge-success bg-success">Ilmoittautunut</span>
+            {% else %}
+            <span class="badge badge-secondary bg-secondary">Et ole ilmoittautunut</span>
+            {% endif %}
+          </td>
         </tr>
         {% else %}
         <tr>
@@ -37,26 +84,44 @@ Talkoiden hallinta - Hallintapaneeli - TaloHuolto
       </tbody>
     </table>
   </section>
+  <section>
+    <h2>Menneet talkoot</h2>
+    <ul>
+      {% for talkoo in menneet_talkoot %}
+      <li>
+        <strong>{{ talkoo.date }}</strong>: {{  talkoo.equipment }}
+      </li>
+      {% else %}
+      <li>Ei menneitä.</li>
+      {% endfor %}
+    </ul>
+  </section>
 
   <div class="border-top my-3"></div>
   
   <!-- Talkoiden ilmoittautumislomake -->
   <section class="ilmoittautuminen">
     <h2>Ilmoittaudu talkoisiin</h2>
+    {% for talkoo in vapaat_talkoot %}
     <p>Täytä alla oleva lomake ilmoittautuaksesi talkoisiin. Ilmoittautumisen jälkeen saat lisätietoja varusteista ja tehtävistä.</p>
 
-    <form action="{{ url_for('main.manage_talkoot') }}" method="POST">
+    <form action="{{ url_for('main.talkoot_ilmoittautuminen') }}" method="POST">
       {{ form.hidden_tag() }}  <!-- Tämä lisää CSRF-tunnuksen lomakkeeseen -->
       <div class="form-group">
         <label for="talkoo">Valitse talkoot</label>
         <select class="form-control" id="talkoo" name="talkoo_id" required>
-          {% for talkoo in talkoot %}
+          {% for talkoo in vapaat_talkoot %}
           <option value="{{ talkoo.id }}">{{ talkoo.date }} - {{ talkoo.equipment }}</option>
+          {% else %}
+          <option disabled>Ei vapaita talkoita.</option>
           {% endfor %}
         </select>
       </div>
       <button type="submit" class="btn btn-primary">Ilmoittaudu</button>
     </form>
+    {% else %}
+      Olet jo ilmoittautunut kaikkiin avoimiin talkoisiin.
+    {% endfor %}
   </section>
   
   {% if current_user.is_administrator() %}

@@ -619,6 +619,7 @@ footer .footer-btt {
 .badge-pending {
   background-color: #f4f4f4;  /* Vaaleanharmaa */
   color: #333;  /* Tummanharmaa teksti */
+  border: 1px solid #ccc;
 }
 
 .badge-approved {
@@ -755,6 +756,23 @@ form button:hover {
 }
 
 #toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.password-wrapper {
+  margin-bottom: 1rem;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.toggle-password {
   position: absolute;
   right: 10px;
   top: 50%;

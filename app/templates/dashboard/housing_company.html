@@ -30,9 +30,11 @@
 
     <h3>Yhtiön sopimukset</h3>
     <ul>
-        {% for contract in company.contracts %}
-            <li><strong>{{ contract.contract_type }}:</strong> {{ contract.company_name }}</li>
-        {% endfor %}
+        {% if contracts %}
+          {% for contract in contracts %}
+          <li><strong>{{ contract.contract_type }}:</strong> {{ contract.company_name }}</li>
+          {% endfor %}
+        {% endif %}
     </ul>
 
     {% if current_user.is_administrator() %}

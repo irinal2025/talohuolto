@@ -15,7 +15,60 @@
             <div class="col">
                 <!--div class="lomake col-md-10 col-lg-8"-->
                 <div class="lomake">
-                    {{ wtf.quick_form(form,novalidate=True,extra_classes='needs-validation') }}
+                    <!--{{ wtf.quick_form(form,novalidate=True,extra_classes='needs-validation') }}-->
+                    <form method="post" novalidate class="needs-validation">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="form-group">
+                            {{ form.email.label }}
+                            {{ form.email(class="form-control") }}
+                        </div>
+                        
+                        <div class="form-group">
+                            {{ form.username.label }}
+                            {{ form.username(class="form-control") }}
+                        </div>
+                        
+                        <div class="form-group">
+                            {{ form.password.label }}
+                            <div class="password-wrapper">
+                                {{ form.password() }}
+                                <i class="toggle-password fas fa-eye"></i> <!-- Silmäkuvake -->
+                            </div>
+                        </div>
+
+                        <!--div class="password-wrapper">
+                            {{ form.password.label }}
+                            <div class="input-group">
+                                {{ form.password(class="form-control") }}
+                                <button type="button" class="btn btn-outline-secondary toggle-password" tabindex="-1">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </div>
+                        </div-->
+
+                        <div class="form-group">
+                            {{ form.password2.label }}
+                            <div class="password-wrapper">
+                                {{ form.password2() }}
+                                <i class="toggle-password fas fa-eye"></i> <!-- Silmäkuvake -->
+                            </div>
+                        </div>
+                        
+                        <!--div class="password-wrapper">
+                            {{ form.password2.label }}
+                            <div class="input-group">
+                                {{ form.password2(class="form-control") }}
+                                <button type="button" class="btn btn-outline-secondary toggle-password" tabindex="-1">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </div>
+                        </div-->
+                        
+                        <div class="form-group">
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                    </form>
                 </div>
                 <p>Onko sinulla jo TaloHuolto tunnus? <a href="{{ url_for('auth.login') }}">Kirjaudu sisään</a></p>
             </div>
@@ -28,3 +81,6 @@
 </section>
 
 {% endblock %}
+
+
+{% block extra_script %}<script src="{{ url_for('static', filename='register.js') }}"></script>{% endblock %}

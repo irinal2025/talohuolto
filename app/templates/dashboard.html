@@ -148,7 +148,25 @@
                     {% for fault_report in fault_reports %}
                         <li>
                             <strong>{{ fault_report.issue }}</strong>  
-                            <small>{{ fault_report.status }}</small>
+                            <small class="badge badge-{{ fault_report.status|lower }}">
+                                {% if fault_report.status == 'pending' %}
+                                    Odottaa
+                                {% elif fault_report.status == 'approved' %}
+                                    Hyväksytty
+                                {% elif fault_report.status == 'delegated' %}
+                                    Delegoitava
+                                {% elif fault_report.status == 'in_progress' %}
+                                    Käynnissä
+                                {% elif fault_report.status == 'resolved' %}
+                                    Ratkaistu
+                                {% elif fault_report.status == 'closed' %}
+                                    Suljettu
+                                {% elif fault_report.status == 'rejected' %}
+                                    Hylätty
+                                {% else %}
+                                    {{ fault_report.status }}
+                                {% endif %}
+                            </small>
                         </li>
                     {% else %}
                         <li>Ei ilmoituksia.</li>
@@ -206,7 +224,8 @@
         <!-- Placeholder for a chart or more statistics -->
         <div class="row mt-4">
             <div class="col-md-6">
-                <h4>Talkoot ja tapahtumat</h4>
+                <!--h4>Talkoot ja tapahtumat</h4-->
+                <h4>Talkoot</h4>
                 <!--div class="chart-placeholder"-->
                     <!--i class="fas fa-chart-line fa-3x"></i-->
                     <!--p>Ajankohtaiset talkoot ja muut tapahtumat taloyhtiössä, johon asukkaat voivat osallistua. (Tulossa)</p>

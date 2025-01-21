@@ -79,6 +79,8 @@ class User(UserMixin, db.Model):
     phone = db.Column(db.String(15), nullable=True)  # Puhelinnumero, max 15 merkkiä
     apartment = db.Column(db.String(5), nullable=True) 
 
+    participations = db.relationship('TalkootParticipants', back_populates='user')
+
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:
@@ -270,7 +272,7 @@ class Talkoot(db.Model):
     equipment = db.Column(db.String(255), nullable=False)
 
     # Suhde TalkootParticipantsiin
-    # participants = db.relationship('TalkootParticipants', back_populates='talkoo', lazy=True)
+    participants = db.relationship('TalkootParticipants', back_populates='talkoo', lazy=True)
 
     def __repr__(self):
         return f'<Talkoot {self.id}>'
@@ -281,12 +283,16 @@ class TalkootParticipants(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     talkoot_id = db.Column(db.Integer, db.ForeignKey('talkoot.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     # Oikea suhde Talkoot-malliin
-    # talkoo = db.relationship('Talkoot', back_populates='participants')
+    talkoo = db.relationship('Talkoot', back_populates='participants')
+
+    # Suhde User-malliin (oletus, että User-malli on olemassa)
+    user = db.relationship('User', back_populates='participations')
 
     def __repr__(self):
-        return f"<Participant {self.name} for Talkoo {self.talkoo.date}>"
+        return f"<Participant {self.name} (User ID {self.user_id}) for Talkoo {self.talkoo.date}>"
 
 
 class Notifications(db.Model):
