@@ -35,6 +35,28 @@
         <p>Tämä on yleiskatsaus pientaloyhtiön huoltokirjaan.</p>
 
         
+        <div class="row mb-3">
+            {% if talkoot_today %}
+                <div class="col-md-6 mb-2 talkoot-today">
+                    <h2 class="mb-1">Talkoot tänään!</h2>
+                    {% for t in talkoot_today %}
+                        <p><strong>{{ t.date.strftime('%d.%m.%Y') }}</strong></p>
+                        <p>Varusteet: {{ t.equipment }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if kokoukset_today %}
+                <div class="col-md-6 mb-2 talkoot-today">
+                    <h2 class="mb-1">Kokous tänään!</h2>
+                    {% for t in kokoukset_today %}
+                        <p><strong>{{ t.start_date.strftime('%d.%m.%Y') }}</strong></p>
+                        <p>{{ t.task_name }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
         <div class="row mb-5">
 
             <!-- Tärkeimmät huoltotiedot -->

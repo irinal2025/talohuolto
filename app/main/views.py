@@ -88,8 +88,6 @@ def dashboard():
     # Laske tulevien tehtävien määrä (kategoria ei ole "Kokous")
     upcoming_tasks_count2 = Task.query.filter(Task.start_date > datetime.now(), Task.category != 'Kokous').count()
 
-
-
     # Hae seuraavat kolme huoltotyötä `start_date`-kriteerin perusteella
     seuraavat_huoltotyot = (
         Task.query.filter(Task.start_date >= nykyinen_aika)  # Suodata tulevat tehtävät
@@ -100,11 +98,15 @@ def dashboard():
 
     # Hae kolme seuraavaa kokousta (category: Kokous)
     tulevat_kokoukset = (
-        Task.query.filter(Task.category == "Kokous", Task.start_date >= nykyinen_aika)
+        #Task.query.filter(Task.category == "Kokous", Task.start_date >= nykyinen_aika)
+        Task.query.filter(Task.category == "Kokous", Task.start_date >= date.today())
         .order_by(Task.start_date.asc())
         .limit(3)
         .all()
     )
+
+    kokoukset_today = Task.query.filter(Task.category == "Kokous", Task.start_date == date.today()).all()
+
 
     fault_reports = FaultReport.query.all()
 
@@ -118,7 +120,10 @@ def dashboard():
     talkoot = Talkoot.query.filter(Talkoot.date >= datetime.now()).all()  # Hae kaikki tiedotteet
 
     # Hae kolme uusinta FaultReport-tietuetta järjestettynä julkaisuajankohdan mukaan
-    talkoot = Talkoot.query.filter(Talkoot.date >= datetime.now()).order_by(Talkoot.date.asc()).limit(3).all()
+    #talkoot = Talkoot.query.filter(Talkoot.date >= datetime.now()).order_by(Talkoot.date.asc()).limit(3).all()
+    talkoot = Talkoot.query.filter(Talkoot.date >= date.today()).order_by(Talkoot.date.asc()).limit(3).all()
+
+    talkoot_today = Talkoot.query.filter(Talkoot.date == date.today()).all()
 
     notifications = Notifications.query.all()  # Hae kaikki tiedotteet
 
@@ -129,7 +134,7 @@ def dashboard():
         if notification.publish_date:
             notification.publish_date = notification.publish_date.strftime('%d.%m.%Y')
 
-    return render_template('dashboard.html', huoltotiedot=huoltotiedot, tasks=tasks, notifications=notifications, fault_reports=fault_reports, seuraavat_huoltotyot=seuraavat_huoltotyot, tulevat_kokoukset=tulevat_kokoukset, talkoot=talkoot, open_fault_reports_count=open_fault_reports_count, upcoming_tasks_count=upcoming_tasks_count, upcoming_tasks_count2=upcoming_tasks_count2)
+    return render_template('dashboard.html', huoltotiedot=huoltotiedot, tasks=tasks, notifications=notifications, fault_reports=fault_reports, seuraavat_huoltotyot=seuraavat_huoltotyot, tulevat_kokoukset=tulevat_kokoukset, talkoot=talkoot, open_fault_reports_count=open_fault_reports_count, upcoming_tasks_count=upcoming_tasks_count, upcoming_tasks_count2=upcoming_tasks_count2, talkoot_today=talkoot_today, kokoukset_today=kokoukset_today)
 
 @main.route('/dashboard/vastike')
 @login_required
