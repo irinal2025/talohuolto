@@ -54,10 +54,10 @@ Talkoiden hallinta - Hallintapaneeli - TaloHuolto
         <tr>
           <th>Päivämäärä</th>
           <th>Varusteet</th>
-          {% if current_user.is_administrator() %}
-          <th>Osallistujat</th>
-          {% endif %}
           <th>Ilmoittautuminen</th>
+          {% if current_user.is_administrator() %}
+            <th>Osallistujat</th>
+          {% endif %}
         </tr>
       </thead>
       <tbody>
@@ -65,9 +65,6 @@ Talkoiden hallinta - Hallintapaneeli - TaloHuolto
         <tr>
           <td>{{ talkoo.date }}</td>
           <td>{{ talkoo.equipment }}</td>
-          {% if current_user.is_administrator() %}
-          <td>{{ talkoo.participants|map(attribute='name')|join(', ') or 'Ei osallistujaa' }}</td> <!-- Osallistujat näkyvät täällä -->
-          {% endif %}
           <td>
             {% if talkoo.id in osallistuneet_talkoot_ids %}
             <span class="badge badge-success bg-success">Ilmoittautunut</span>
@@ -75,6 +72,9 @@ Talkoiden hallinta - Hallintapaneeli - TaloHuolto
             <span class="badge badge-secondary bg-secondary">Et ole ilmoittautunut</span>
             {% endif %}
           </td>
+          {% if current_user.is_administrator() %}
+            <td>{{ talkoo.participants|map(attribute='name')|join(', ') or 'Ei osallistujaa' }}</td> <!-- Osallistujat näkyvät täällä -->
+          {% endif %}
         </tr>
         {% else %}
         <tr>
@@ -102,9 +102,9 @@ Talkoiden hallinta - Hallintapaneeli - TaloHuolto
   <!-- Talkoiden ilmoittautumislomake -->
   <section class="ilmoittautuminen">
     <h2>Ilmoittaudu talkoisiin</h2>
-    {% for talkoo in vapaat_talkoot %}
-    <p>Täytä alla oleva lomake ilmoittautuaksesi talkoisiin. Ilmoittautumisen jälkeen saat lisätietoja varusteista ja tehtävistä.</p>
 
+    <p>Täytä alla oleva lomake ilmoittautuaksesi talkoisiin. Ilmoittautumisen jälkeen saat lisätietoja varusteista ja tehtävistä.</p>
+    {% if vapaat_talkoot %}
     <form action="{{ url_for('main.talkoot_ilmoittautuminen') }}" method="POST">
       {{ form.hidden_tag() }}  <!-- Tämä lisää CSRF-tunnuksen lomakkeeseen -->
       <div class="form-group">
@@ -121,7 +121,7 @@ Talkoiden hallinta - Hallintapaneeli - TaloHuolto
     </form>
     {% else %}
       Olet jo ilmoittautunut kaikkiin avoimiin talkoisiin.
-    {% endfor %}
+    {% endif %}
   </section>
   
   {% if current_user.is_administrator() %}

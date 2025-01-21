@@ -487,8 +487,12 @@ def manage_talkoot_hallinta():
         return redirect(url_for('main.manage_talkoot_hallinta'))
 
     # Hae kaikki talkoot
-    talkoot = Talkoot.query.all()
-    return render_template('dashboard/talkoot_hallinta.html', form=form, talkoot=talkoot)
+    talkoot = Talkoot.query.order_by(Talkoot.date.desc()).all()
+
+    # Lisää nykyinen päivämäärä templaattia varten
+    current_date = date.today()
+
+    return render_template('dashboard/talkoot_hallinta.html', form=form, talkoot=talkoot, current_date=current_date)
 
 
 
@@ -666,6 +670,7 @@ def poista():
 
 
 @main.route('/api/events', methods=['GET'])
+@login_required
 def get_events():
     tasks = Task.query.all()
     events = []
@@ -680,4 +685,35 @@ def get_events():
             event["end"] = task.end_date.isoformat()
         events.append(event)
     return jsonify(events)
+
+
+@main.route('/api/tasks', methods=['GET'])
+@login_required
+def api_tasks():
+    sort_by = request.args.get('sort_by', 'start_date')  # Oletuslajittelu
+    order = request.args.get('order', 'asc')  # Oletusjärjestys
+
+    # Lajittele tehtävät
+    if order == 'asc':
+        tasks = Task.query.order_by(getattr(Task, sort_by).asc()).all()
+    else:
+        tasks = Task.query.order_by(getattr(Task, sort_by).desc()).all()
+
+    # Palauta JSON-vastaus
+    tasks_data = [
+        {   
+            "id": task.id,
+            "task_name": task.task_name,
+            "category": task.category,
+            "start_date": task.start_date.strftime('%d.%m.%Y'),
+            "end_date": task.end_date.strftime('%d.%m.%Y'),
+            "priority": task.priority,
+        }
+        for task in tasks
+    ]
+    response = {
+        "tasks": tasks_data,
+        "is_administrator": current_user.is_administrator()  # Palautetaan tieto, onko ylläpitäjä
+    }
+    return jsonify(response)
 

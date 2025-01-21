@@ -190,6 +190,26 @@ form.taskupdateform {
   border-radius: 0;
   padding: 2px;
 }
+form.form-inline.form-inline-sort {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.form-inline-sort div {
+  align-self: flex-end;
+  flex-grow: 1;
+  margin-right: 10px;
+}
+.infolabel {
+   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 12px;
+  color: gray;
+  line-height: 14px;
+  padding: 0;
+  margin: 0;
+}
 
 /* Linkit */
 a {
@@ -519,7 +539,10 @@ footer .footer-btt {
   transform: translateY(0.25em);
 }
 
-
+li.past-works {
+  color: gray;
+  text-decoration: line-through;
+}
 
 /* Hero-osio */
 .syksy {

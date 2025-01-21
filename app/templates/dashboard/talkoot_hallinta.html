@@ -30,11 +30,17 @@ Talkoiden hallinta (Admin) - Hallintapaneeli - TaloHuolto
   <section>
 
   <h3>Kaikki Talkoot</h3>
-<ul>
-  {% for talkoo in talkoot %}
-    <li>{{ talkoo.date }} - {{ talkoo.equipment }}</li>
-  {% endfor %}
-</ul>
+  <ul>
+    {% for talkoo in talkoot %}
+      {% if talkoo.date < current_date %}
+        <li class="past-works">{{ talkoo.date.strftime('%d.%m.%Y') }} - {{ talkoo.equipment }}</li>
+      {% elif talkoo.date > current_date %} 
+        <li class="upcoming-works">{{ talkoo.date.strftime('%d.%m.%Y') }} - {{ talkoo.equipment }}</li>
+      {% else %}
+        <li>{{ talkoo.date.strftime('%d.%m.%Y') }} - {{ talkoo.equipment }}</li>
+      {% endif %}
+    {% endfor %}
+  </ul>
 </section>
   
 

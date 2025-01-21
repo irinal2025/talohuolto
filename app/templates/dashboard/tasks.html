@@ -14,13 +14,13 @@ Huoltokirja ja tehtävät - Dashboard
         <!-- Tehtävien lista -->
         <section class="dashboard-section">
             <h2>Tehtävät</h2>
-            <ul>
+            <!-- <ul>
                 {% for task in tasks %}
                     <li>
                         <strong>{{ task.task_name }}</strong> |  
                         Kategoria: {{ task.category }} | 
-                        Aloitus: {{ task.start_date }} | 
-                        Päättyy: {{ task.end_date }} | 
+                        Aloitus: {{ task.start_date.strftime('%d.%m.%Y') }} | 
+                        Päättyy: {{ task.end_date.strftime('%d.%m.%Y') }} | 
                         Prioriteetti: <span class="priority-{{ task.priority.lower() }}">{{ task.priority }}</span> 
                         {% if current_user.is_administrator() %}
                             <span> | </span>
@@ -30,9 +30,31 @@ Huoltokirja ja tehtävät - Dashboard
                 {% else %}
                     <p>Ei tehtäviä listattavana.</p>
                 {% endfor %}
+            </ul>-->
+
+            <form id="sortForm" class="form-inline form-inline-sort">
+                <div>
+                    <label for="sort_by" class="infolabel">Järjestä:</label>
+                    <select name="sort_by" id="sort_by" class="mt-0">
+                        <option value="task_name">Nimen mukaan</option>
+                        <option value="start_date">Aloituspäivän mukaan</option>
+                        <option value="end_date">Päättymispäivän mukaan</option>
+                        <option value="priority">Prioriteetin mukaan</option>
+                    </select>
+                </div>
+                <div>
+                    <select name="order" id="order">
+                        <option value="asc">Nouseva</option>
+                        <option value="desc">Laskeva</option>
+                    </select>
+                </div>
+            </form>
+            
+            <ul id="tasksList">
+                <!-- Tehtävälista päivittyy tähän -->
             </ul>
         </section>
-        
+
         <div class="border-top my-3"></div>
 
         <section class="lisaa-huoltotyo">
@@ -67,3 +89,5 @@ Huoltokirja ja tehtävät - Dashboard
     </section>
 
 {% endblock %}
+
+{% block extra_script %}<script src="{{ url_for('static', filename='tasks.js') }}"></script>{% endblock %}
