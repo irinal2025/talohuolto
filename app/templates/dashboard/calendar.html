@@ -63,7 +63,13 @@ Huoltokalenteri - Hallintapaneeli - TaloHuolto
     <li>Ei menneitä huoltotöitä.</li>
     {% endfor %}
   </ul>
+    
 </section>
+
+    <section>
+      <a href="{{ url_for('main.manage_tasks') }}" class="">Tarkista huoltokirja ja tehtävät <i class="fa-solid fa-angles-right"></i></a>
+    </section>
+
   </div>
 
   <!-- FullCalendar Locales -->
